@@ -1,3 +1,65 @@
 import { Routes } from '@angular/router';
+//import { CanActivateGuard } from './common/guard/can-activate.guard';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login.component').then(m => m.LoginComponent)
+  },
+
+  {
+    path: '',
+    //canActivate: [CanActivateGuard],
+    loadComponent: () =>
+      import('./components/shared/content/content.component').then(m => m.ContentComponent),
+
+    children: [
+      {
+        path: 'quotes',
+        loadComponent: () =>
+          import('./components/quotes/quote.component').then(m => m.QuotesComponent)
+      },
+      {
+        path: 'upload',
+        loadComponent: () =>
+          import('./components/upload/upload.component').then(m => m.UploadComponent)
+      },
+      {
+        path: 'reports',
+        loadComponent: () =>
+          import('./components/reports/reports.component').then(m => m.ReportsComponent)
+      },
+      {
+        path: 'edit',
+        loadComponent: () =>
+          import('./components/users/edit/edit.component').then(m => m.EditComponent)
+      },
+      {
+        path: 'permits',
+        loadComponent: () =>
+          import('./components/users/permits/permits.component').then(m => m.PermitsComponent)
+      },
+      {
+        path: 'roles',
+        loadComponent: () =>
+          import('./components/users/roles/roles.component').then(m => m.RolesComponent)
+      },
+
+    ]
+  },
+
+  // redirect root
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login'
+  },
+
+  // wildcard
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
+];
