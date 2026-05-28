@@ -19,4 +19,5 @@ export class StorageService {
     sessionStorage.removeItem(sessionData.token);
     return true
   };
+
 }

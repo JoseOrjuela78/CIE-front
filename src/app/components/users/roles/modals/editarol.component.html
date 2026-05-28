@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{titulo}}</h5>
+            <div class="form-check form-switch">
+                <input [(ngModel)]="estado" class="form-check-input" type="checkbox" role="switch" id="switchCheckChecked" checked>
+                <label class="form-check-label" for="switchCheckChecked">Estado :</label>
+            </div>
+            <hr>
+              <table class="table">
+                <thead>
+                    <tr>
+                        <th class="bg-primary text-white" scope="col"><button
+                            class="btn btn-primary"
+                            >{{datatable.headerRows['Titulo']}}
+                            </button></th>
+                        <th class="bg-primary text-white" scope="col"><button
+                            class="btn btn-primary"
+                            >{{datatable.headerRows['Permiso']}}
+                            </button></th>
+                        <th class="bg-primary text-white" scope="col"><button
+                             class="btn btn-primary"
+                             >
+                             {{datatable.headerRows['Estado']}}
+                            </button></th>
+            </tr> 
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of datatable.dataRows" class="font11">
+            <td>{{row.titulo}}</td>
+                <td>
+                    <select [(ngModel)]="idSeleccionado" class="form-select" aria-label="Default select example" (click)="updatePermiso(row.idMenu,idSeleccionado)">
+                        <option selected [value]="0">Open this select menu</option>    
+                        <option *ngFor="let act of actionsArr" [value]="act.codigo">{{ act.valor }}</option>
+                    </select>
+                </td>
+            <td>{{row.idAction}}</td>
+         </tr>
+         </tbody>
+      </table>
+
+        </div>
+    </div>
+</div>

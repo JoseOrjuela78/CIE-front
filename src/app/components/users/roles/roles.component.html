@@ -1,2 +1,158 @@
 
-<p>roles works!</p>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title">Roles</h1>
+      <hr>
+      <form [formGroup]="searchForm" (ngSubmit)="firstPage()">
+        <div class="row">
+            <div class="col-2">
+              <label for="idrol" class="form-label">Id rol :</label>
+              <select formControlName="idrol" class="form-select mb-3" aria-label="Large select example">
+                <option selected value="">Todos</option>
+                <option value="1">1 - Super Admin</option>
+                <option value="2">2 - Director</option>
+              </select>
+            </div>
+            <div class="col-3">
+              <div class="mb-3">
+                <label for="titulo" class="form-label">Titulo :</label>
+                <input formControlName="titulo" type="text" class="form-control" id="Titulo" aria-describedby="titulo">
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripcion</label>
+                <input formControlName="descripcion" type="text" class="form-control" id="descripcion" aria-describedby="descripcion">
+              </div>
+            </div>
+            <div class="col-2">
+              <label for="Estado" class="form-label">Estado :</label>
+              <select formControlName="idrol" class="form-select mb-3" aria-label="Large select example">
+                <option selected value="">Todos</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-warning m-1 boton" (click)="onClear()">Limpiar</button>
+        <button type="submit" class="btn btn-primary m-1 boton">Buscar</button>
+        <button type="button" class="btn btn-success m-1 boton">Crear</button>
+      </form>
+      <hr>
+      <!--Table init-->
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="bg-primary text-white" scope="col"><button
+                             class="btn btn-primary">
+                             {{datatable.headerRows['Idrol']}}
+                            </button></th>
+            <th class="bg-primary text-white" scope="col"><button
+                            class="btn btn-primary"
+                            (click)="columnFunction('titulo')"
+                            >{{datatable.headerRows['Titulo']}}
+                            </button></th>
+            <th class="bg-primary text-white" scope="col"><button
+                            class="btn btn-primary"
+                            (click)="columnFunction('descripcion')"
+                            >{{datatable.headerRows['Descripcion']}}
+                            </button></th>
+            <th class="bg-primary text-white" scope="col"><button
+                             class="btn btn-primary"
+                             (click)="columnFunction('estado')">
+                             {{datatable.headerRows['Estado']}}
+                            </button></th>
+            <th class="bg-primary text-white" scope="col"><button
+                             class="btn btn-primary">
+                             {{datatable.headerRows['Opciones']}}
+                            </button></th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of datatable.dataRows" class="font11">
+            <td>{{row.idrol}}</td>
+            <td>{{row.titulo}}</td>
+            <td>{{row.descripcion}}</td>
+            <td>{{row.estado }}</td>
+            <td><button (click)="openEditRol()"  class="btn btn-primary">editar</button></td>
+          </tr>
+         </tbody>
+      </table>
+      <!--Table init-->
+      <!--Paginacion init-->
+      <nav class="font11" aria-label="Page navigation example">
+        <div class="row">
+          <div class="col-2 mt-1">
+            <select [(ngModel)]="registrosXPagina" (ngModelChange)="firstPage()" class="form-select form-select-sm" aria-label="page size select">
+              <option *ngFor="let cant of cantRegistros" [ngValue]="cant">{{ cant }}</option>
+            </select>
+            <small class="text-body-secondary">Registros de {{ totalRegistros }} en total.</small>
+          </div>
+
+          <div class="col-6">
+          <ul class="pagination">
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="firstPage"
+            (click)="firstPage()"
+            >
+            <span aria-hidden="true">&lsaquo;</span>
+            </button>
+          </li>
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="Previous"
+            (click)="previousPage()"
+            [disabled] = "buttons.previous"
+            >
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+          </li>
+           <!--Numeros-->
+          <li class="page-item" [ngClass]="{'active': paginaActual===paginaActual}">
+            <a class="page-link"
+               *ngIf="!showPages"
+            >{{paginaActual}}</a></li>
+            <li
+            class="page-item"
+            [ngClass]="{'active': paginaActual===pag}"
+            *ngFor="let pag of paginasMostrar"
+            >
+              <a
+              class="page-link"
+              *ngIf="showPages"
+              (click)="cambiarPagina(pag)"
+              >{{pag}}</a></li>
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="Next"
+            (click)="nextPage()"
+            [disabled] = "buttons.next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </button>
+          </li>
+          <li class="page-item">
+          <button
+          class="page-link"
+          aria-label="lastPage"
+          (click)="lastPage()"
+          >
+          <span aria-hidden="true">&rsaquo;</span>
+          </button>
+          </li>
+        </ul>
+        </div>
+        <div class="col-4 text-end">
+          <button type="button" (click)="exportReport()" class="btn btn-outline-primary">Exportar</button>
+        </div>
+        </div>
+      </nav>
+     <!--Paginacion end-->
+    </div>
+  </div>
+</div>

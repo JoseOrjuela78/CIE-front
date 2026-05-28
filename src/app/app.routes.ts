@@ -12,7 +12,7 @@ export const routes: Routes = [
 
   {
     path: '',
-    canActivate: [authGuard],
+   // canActivate: [authGuard],
     loadComponent: () =>
       import('./components/shared/content/content.component').then(m => m.ContentComponent),
 
