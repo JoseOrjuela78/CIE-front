@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './common/guard/can.activa.guard';
 //import { CanActivateGuard } from './common/guard/can-activate.guard';
 
 export const routes: Routes = [
@@ -11,7 +12,7 @@ export const routes: Routes = [
 
   {
     path: '',
-    //canActivate: [CanActivateGuard],
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./components/shared/content/content.component').then(m => m.ContentComponent),
 

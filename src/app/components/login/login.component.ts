@@ -13,6 +13,7 @@ export class LoginComponent {
 
   // 🔥 valor derivado
   doubleCount = computed(() => this.count() * 2);
+profileForm: any;
 
   // acciones
   increment() {

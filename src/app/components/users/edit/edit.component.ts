@@ -1,4 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangePassComponent } from './modal/changepass/changepass.component';
 
 @Component({
   selector: 'app-edit',
@@ -8,22 +10,9 @@ import { Component, signal, computed } from '@angular/core';
 })
 export class EditComponent {
 
-   // 🔥 estado reactivo con signals
-  count = signal(0);
+  private modalService = inject(NgbModal);
 
-  // 🔥 valor derivado
-  doubleCount = computed(() => this.count() * 2);
-
-  // acciones
-  increment() {
-    this.count.update(value => value + 1);
-  }
-
-  decrement() {
-    this.count.update(value => value - 1);
-  }
-
-  reset() {
-    this.count.set(0);
+  openChangePass() {
+    const modalref = this.modalService.open(ChangePassComponent);
   }
 }

@@ -1,0 +1,11 @@
+button {
+  width: 160px;
+}
+
+label {
+  font-weight: bold;
+}
+
+#form {
+  background-color:ghostwhite;
+}
