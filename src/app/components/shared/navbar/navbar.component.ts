@@ -1,5 +1,6 @@
-import { Component} from '@angular/core';
-import { RouterLink, RouterLinkActive } from "@angular/router";
+import { Component, inject} from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
+import { StorageService } from '../../../common/constans/storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,5 +10,13 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   imports: [RouterLink, RouterLinkActive]
 })
 export class NavbarComponent {
+
+  private storageService = inject(StorageService);
+  private router = inject(Router);
+
+  closeSession() {
+    this.storageService.cerrarSesion();
+    return this.router.navigate(['/login']);
+  }
 
 }

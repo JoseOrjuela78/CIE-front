@@ -1,30 +1,65 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { LoginService } from './services/login.service';
+import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { StorageService } from '../../common/constans/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
-  // 🔥 estado reactivo con signals
-  count = signal(0);
+  loginForm!: FormGroup;
 
-  // 🔥 valor derivado
-  doubleCount = computed(() => this.count() * 2);
-profileForm: any;
+  private loginService = inject(LoginService);
+  private storageService = inject(StorageService);
+  private router = inject(Router);
 
-  // acciones
-  increment() {
-    this.count.update(value => value + 1);
+  ngOnInit(): void {
+    this.loginForm = new FormGroup({
+      'username': new FormControl(null, Validators.required),
+      'pass': new FormControl(null, Validators.required)
+    });
+  };
+
+  login() {
+
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Validando credenciales...'
+
+    });
+    Swal.showLoading()
+
+    this.loginService.login(this.loginForm.value.username, this.loginForm.value.pass).subscribe({
+      next: (data) => {
+        const body = {
+          rol: data.user.rol,
+          nombreUsuario: data.user.nombre + ' ' + data.user.apellido,
+          token: data.token
+
+        };
+        this.storageService.cargarSesion(body);
+        this.router.navigate(['/']);
+        Swal.close();
+      },
+      error: (err) => {
+        Swal.fire({
+          allowOutsideClick: true,
+          icon: 'error',
+          title: err.error.msg,
+          text: 'Error De Autenticación'
+        });
+      }
+    });
   }
 
-  decrement() {
-    this.count.update(value => value - 1);
-  }
 
-  reset() {
-    this.count.set(0);
-  }
 }
