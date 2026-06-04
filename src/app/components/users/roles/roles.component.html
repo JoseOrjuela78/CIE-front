@@ -37,7 +37,7 @@
         </div>
         <button type="button" class="btn btn-warning m-1 boton" (click)="onClear()">Limpiar</button>
         <button type="submit" class="btn btn-primary m-1 boton">Buscar</button>
-        <button type="button" class="btn btn-success m-1 boton">Crear</button>
+        <button type="button" class="btn btn-success m-1 boton" (click)="openEditRol(null,null)">Crear</button>
       </form>
       <hr>
       <!--Table init-->
@@ -75,7 +75,7 @@
             <td>{{row.titulo}}</td>
             <td>{{row.descripcion}}</td>
             <td>{{row.estado }}</td>
-            <td><button (click)="openEditRol()"  class="btn btn-primary">editar</button></td>
+            <td><button (click)="openEditRol(row.idrol,row.titulo)"  class="btn btn-primary">editar</button></td>
           </tr>
          </tbody>
       </table>

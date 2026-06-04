@@ -1,6 +1,6 @@
 export interface IRoles {
-    idRol: number;
+    idRol: number | null;
     idMenu: number;
     titulo: string;
-    idAction: number;
+    idAction: any[];
 };

@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IRoles } from "../../../../common/constans/models/IRoles";
 import { DataTable } from "../../../../common/constans/models/IDataTable";
+import { Element } from "@angular/compiler";
 
 @Component({
   selector: 'app-editarol',
@@ -16,7 +17,8 @@ export class EditRolComponent implements OnInit {
     menusArr:any = [];
     actionsArr:any=[];
     titulo!: string;
-    estado!: boolean;
+    estado: boolean = false;
+    checkInput: boolean = false;
     datatable!: DataTable;
     idSeleccionado:number = 0;
 
@@ -27,47 +29,185 @@ export class EditRolComponent implements OnInit {
         this.datatable = {
         headerRows: {
                     Titulo: "Titulo",
-                    Permiso: "Permiso",
-                    Estado:"Estado"
+                    Permisos: "Permisos"
                   },
                     dataRows: []
         };
         this.titulo = this.dataRol.titulo;
-        this.estado = this.dataRol.estado === 1;
-        this.getMenus(this.dataRol.idRol);
-        this.actionsArr = this.getActions();
-    }
+        this.getActions();
+        if(this.dataRol.idRol != null){
+            this.getMenusRol(this.dataRol.idRol);
+        }else{
+            this.getMenus(this.dataRol.idRol);
+        }
+        
+    };
     
     getActions(){
-        return [{codigo: 1, valor: 'Obtener'},{codigo: 2, valor: 'Obtener,Crear'},{codigo: 3, valor: 'Obtener,Crear,Actualizar'},{codigo: 4, valor: 'Obtener,Crear,Actualizar,Eliminar'}]
-    }
+        const result = [{codigo: 1, valor: 'Obtener'},{codigo: 2, valor: 'Crear'},{codigo: 3, valor: 'Actualizar'},{codigo: 4, valor: 'Eliminar'}]
+        result.forEach((Element:any) =>{
+            const value = {...Element, status:false};
+            this.actionsArr.push(value);
+        });
+    };
 
-    getMenus(idRol:number){
-        const arr = [{id_menu: 1, titulo: 'Quotes'},{id_menu: 2, titulo: 'Reports'},{id_menu: 3, titulo: 'Upload'},{id_menu: 4, titulo: 'Users'}];
-        arr.forEach(Element =>{
+    getMenusRol(idRol:number){
+        const getMenusRol = [
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 1,
+        "ID_ACCION": 1
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 1,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 1,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 1,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 2,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 2,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 2,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 2,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 3,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 3,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 3,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 3,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 4,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 4,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 4,
+        "ID_ACCION": null
+    },
+    {
+        "ID_ROL": 1,
+        "ID_MENU": 4,
+        "ID_ACCION": null
+    }
+    ];
+     this.getMenus(idRol);
+
+     for( let i of getMenusRol) {
+           const {ID_MENU,ID_ACCION} = i;
+           for(let e in this.datatable.dataRows){
+            if(this.datatable.dataRows[e].idMenu === ID_MENU ){
+                for(let i in this.datatable.dataRows[e].idAction){
+                    if(this.datatable.dataRows[e].idAction[i].codigo === ID_ACCION){
+                        this.datatable.dataRows[e].idAction[i].status = true;
+                    };
+                };
+            };
+        };
+      
+    
+     };
+    console.log(this.datatable.dataRows);
+   };
+
+
+    //Construye objeto base 
+    getMenus(idRol:number | null){
+        const getMenus = [{id_menu: 1, titulo: 'Quotes'},{id_menu: 2, titulo: 'Reports'},{id_menu: 3, titulo: 'Upload'},{id_menu: 4, titulo: 'Users'}];
+        getMenus.forEach(Element =>{
+
             const menu :IRoles = {
                 idRol,
                 titulo: Element.titulo,
                 idMenu: Element.id_menu,
-                idAction: 0
+                idAction: this.actionsArr.map((x:any)=>({...x}))
             };
             
             this.menusArr.push(menu);
         })
+
        this.datatable.dataRows = this.menusArr;
+       console.log(this.datatable.dataRows);
     }
 
-    updatePermiso(idmenu:number,permiso:number){
-
+    updatePermiso(idmenu:number,codigo:number,permiso:boolean){
+        console.log({idmenu,codigo,permiso});
+        
         for(let e in this.datatable.dataRows){
-            console.log(this.datatable.dataRows[e]);
             if(this.datatable.dataRows[e].idMenu === idmenu ){
-                this.datatable.dataRows[e].idAction = permiso;
-                break;
-            }
+                for(let i in this.datatable.dataRows[e].idAction){
+                    if(this.datatable.dataRows[e].idAction[i].codigo === codigo){
+                        this.datatable.dataRows[e].idAction[i].status = permiso;
+                        break;
+                    };
+                };
+            };
+        };
+      console.log(this.datatable.dataRows);
+    };
+
+    guardarRol(){
+        //Backend
+        const rows = [];
+        const row = {
+            ID_ROL: null,
+            ID_MENU: null,
+            ID_ACCION: null
         }
 
-        console.log(this.datatable.dataRows);
-
-    }
-}
+        for(let i of this.datatable.dataRows){
+            row.ID_ROL = i.idRol
+            row.ID_MENU = i.idMenu
+            for(let j of i.idAction){
+                row.ID_ACCION = null;
+                if(j.status) row.ID_ACCION = j.codigo;
+                    rows.push({...row})
+                    continue;
+            }
+        };
+        console.log({rows});
+    };
+};

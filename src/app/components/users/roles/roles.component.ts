@@ -160,11 +160,11 @@ export class RolesComponent implements OnInit {
 
   }
 
-  openEditRol() {
+  openEditRol(idRol:number | null, titulo:string|null) {
       const modalref = this.modalService.open(EditRolComponent);
       modalref.componentInstance.dataRol = {
-        idRol: 50,
-        titulo:'Admin',
+        idRol:idRol,
+        titulo:titulo,
         estado: 0
  };
 }
