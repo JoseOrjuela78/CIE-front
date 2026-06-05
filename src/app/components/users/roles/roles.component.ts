@@ -32,8 +32,7 @@ export class RolesComponent implements OnInit {
   searchForm!: FormGroup;
 
   private utils = inject(UtilitiesService);
-
-   private modalService = inject(NgbModal);
+  private modalService = inject(NgbModal);
 
   ngOnInit(): void {
 

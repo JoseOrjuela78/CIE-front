@@ -1,2 +1,135 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+            <h1 class="card-title">Restricciones</h1>
+              <hr>
+              <div class="row">
+                <div class="col-6">
+                    <select class="form-select form-select-lg mb-3" aria-label="Large select example">
+                        <option selected disabled>Seleccione Restriccion</option>
+                        <option *ngFor="let res of restricciones" [value]="res.codigo">{{res.valor}}</option>
+                    </select>
+                </div>
+                <div class="col-6 mt-1">
+                    <button type="button" class="btn btn-primary" (click)="openAddUser(1)">Agregar Usuario</button>
+                </div>
+              </div>
+              <hr class="m-1">
+      <form [formGroup]="searchForm" (ngSubmit)="firstPage()">
+        <div class="row">
+            <div class="col-3">
+              <div class="mb-3">
+                <label for="titulo" class="form-label">Identificacion :</label>
+                <input formControlName="identificacion" type="text" class="form-control" id="Titulo" aria-describedby="titulo">
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Nombre</label>
+                <input formControlName="nombre" type="text" class="form-control" id="descripcion" aria-describedby="descripcion">
+              </div>
+            </div>
+   
+        </div>
+      </form>
+      <hr>
+      <!--Table init-->
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="bg-primary text-white" scope="col"><button
+                             class="btn btn-primary">
+                             {{datatable.headerRows['Identificacion']}}
+                            </button></th>
+            <th class="bg-primary text-white" scope="col"><button
+                            class="btn btn-primary"
+                            (click)="columnFunction('Nombre')"
+                            >{{datatable.headerRows['Nombre']}}
+                            </button></th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of datatable.dataRows" class="font11">
+            <td>{{row.identificacion}}</td>
+            <td>{{row.nombre}}</td>
+           <td><button  class="btn btn-danger">Eliminar</button></td>
+          </tr>
+         </tbody>
+      </table>
+      <!--Table init-->
+      <!--Paginacion init-->
+      <nav class="font11" aria-label="Page navigation example">
+        <div class="row">
+          <div class="col-2 mt-1">
+            <select [(ngModel)]="registrosXPagina" (ngModelChange)="firstPage()" class="form-select form-select-sm" aria-label="page size select">
+              <option *ngFor="let cant of cantRegistros" [ngValue]="cant">{{ cant }}</option>
+            </select>
+            <small class="text-body-secondary">Registros de {{ totalRegistros }} en total.</small>
+          </div>
 
-<p>permits works!</p>
+          <div class="col-6">
+          <ul class="pagination">
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="firstPage"
+            (click)="firstPage()"
+            >
+            <span aria-hidden="true">&lsaquo;</span>
+            </button>
+          </li>
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="Previous"
+            (click)="previousPage()"
+            [disabled] = "buttons.previous"
+            >
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+          </li>
+           <!--Numeros-->
+          <li class="page-item" [ngClass]="{'active': paginaActual===paginaActual}">
+            <a class="page-link"
+               *ngIf="!showPages"
+            >{{paginaActual}}</a></li>
+            <li
+            class="page-item"
+            [ngClass]="{'active': paginaActual===pag}"
+            *ngFor="let pag of paginasMostrar"
+            >
+              <a
+              class="page-link"
+              *ngIf="showPages"
+              (click)="cambiarPagina(pag)"
+              >{{pag}}</a></li>
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="Next"
+            (click)="nextPage()"
+            [disabled] = "buttons.next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </button>
+          </li>
+          <li class="page-item">
+          <button
+          class="page-link"
+          aria-label="lastPage"
+          (click)="lastPage()"
+          >
+          <span aria-hidden="true">&rsaquo;</span>
+          </button>
+          </li>
+        </ul>
+        </div>
+        <div class="col-4 text-end">
+          <button type="button" (click)="exportReport()" class="btn btn-outline-primary">Exportar</button>
+        </div>
+        </div>
+      </nav>
+     <!--Paginacion end-->
+    </div>
+  </div>
+</div>
