@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      'username': new FormControl(null, Validators.required),
+      'email': new FormControl(null, Validators.required),
       'pass': new FormControl(null, Validators.required)
     });
   };
@@ -38,11 +38,11 @@ export class LoginComponent implements OnInit {
     });
     Swal.showLoading()
 
-    this.loginService.login(this.loginForm.value.username, this.loginForm.value.pass).subscribe({
+    this.loginService.login(this.loginForm.value.email, this.loginForm.value.pass).subscribe({
       next: (data) => {
         const body = {
-          rol: data.user.rol,
-          nombreUsuario: data.user.nombre + ' ' + data.user.apellido,
+          rol: data.user.ID_ROL,
+          nombreUsuario: data.user.NOMBRE1 + ' ' + data.user.APELLIDO1,
           token: data.token
 
         };

@@ -23,7 +23,7 @@ export class EditRolComponent implements OnInit {
     idSeleccionado:number = 0;
 
     @Input() dataRol!: any;
-    
+
 
     ngOnInit(): void {
         this.datatable = {
@@ -40,9 +40,9 @@ export class EditRolComponent implements OnInit {
         }else{
             this.getMenus(this.dataRol.idRol);
         }
-        
+
     };
-    
+
     getActions(){
         const result = [{codigo: 1, valor: 'Obtener'},{codigo: 2, valor: 'Crear'},{codigo: 3, valor: 'Actualizar'},{codigo: 4, valor: 'Eliminar'}]
         result.forEach((Element:any) =>{
@@ -147,14 +147,14 @@ export class EditRolComponent implements OnInit {
                 };
             };
         };
-      
-    
+
+
      };
     console.log(this.datatable.dataRows);
    };
 
 
-    //Construye objeto base 
+    //Construye objeto base
     getMenus(idRol:number | null){
         const getMenus = [{id_menu: 1, titulo: 'Quotes'},{id_menu: 2, titulo: 'Reports'},{id_menu: 3, titulo: 'Upload'},{id_menu: 4, titulo: 'Users'}];
         getMenus.forEach(Element =>{
@@ -165,7 +165,7 @@ export class EditRolComponent implements OnInit {
                 idMenu: Element.id_menu,
                 idAction: this.actionsArr.map((x:any)=>({...x}))
             };
-            
+
             this.menusArr.push(menu);
         })
 
@@ -175,7 +175,7 @@ export class EditRolComponent implements OnInit {
 
     updatePermiso(idmenu:number,codigo:number,permiso:boolean){
         console.log({idmenu,codigo,permiso});
-        
+
         for(let e in this.datatable.dataRows){
             if(this.datatable.dataRows[e].idMenu === idmenu ){
                 for(let i in this.datatable.dataRows[e].idAction){

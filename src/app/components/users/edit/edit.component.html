@@ -4,64 +4,88 @@
       <h3 class="card-title">USUARIOS</h3>
     </div>
     <div class="card-body">
-        <form>
+        <form [formGroup]="EditForm" (ngSubmit)="createUser()">
             <div class="row">
                 <div class="col-4">
                     <div class="mb-3">
                         <label for="tipoPersona" class="form-label">Tipo Persona :</label>
-                        <select id="tipoPersona" class="form-select">
-                            <option>Natural</option>
-                            <option>Juridica</option>
+                        <select
+                        formControlName="tipo_persona"
+                        id="tipoPersona"
+                        class="form-select"
+                        >
+                          <option *ngFor="let tipo of tiposPersona" [ngValue]="tipo['CODIGO']">{{tipo['VALOR']}}</option>
+
                         </select>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="mb-3">
-                        <label for="tipoDocumento" class="form-label">Tipo Documento :</label>
-                        <select id="tipoDocumento" class="form-select">
-                            <option>Cedula</option>
-                            <option>Extrangeria</option>
+                        <label for="tipo_identificacion" class="form-label">Tipo Documento :</label>
+                        <select
+                        formControlName="tipo_identificacion"
+                        id="tipo_identificacion"
+                        class="form-select">
+                          <option *ngFor="let tipo of tiposDocumento" [ngValue]="tipo['CODIGO']">{{tipo['PARAMETROS']}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="mb-3">
                         <label for="identificacion" class="form-label">Identificacion :</label>
-                        <input type="text" class="form-control" id="identificacion">
+                        <input
+                        formControlName="identificacion"
+                        type="text"
+                        class="form-control" id="identificacion">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="mb-3">
-                        <label for="razonSocial" class="form-label">Razon Social :</label>
-                        <input type="text" class="form-control" id="razonSocial">
+                        <label for="razon_social" class="form-label">Razon Social :</label>
+                        <input
+                        formControlName="razon_social"
+                        type="text"
+                        class="form-control" id="razon_social">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-3">
                     <div class="mb-3">
-                        <label for="primerNombre" class="form-label">Primer Nombre :</label>
-                        <input type="text" class="form-control" id="primerNombre">
+                        <label for="nombre1" class="form-label">Primer Nombre :</label>
+                        <input
+                        formControlName="nombre1"
+                        type="text"
+                        class="form-control" id="nombre1">
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="mb-3">
-                        <label for="otrosNombres" class="form-label">Otros Nombres :</label>
-                        <input type="text" class="form-control" id="otrosNombres">
+                        <label for="nombre2" class="form-label">Otros Nombres :</label>
+                        <input
+                        formControlName="nombre2"
+                        type="text"
+                        class="form-control" id="nombre2">
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="mb-3">
-                        <label for="primerApellido" class="form-label">Primer Apellido :</label>
-                        <input type="text" class="form-control" id="primerApellido">
+                        <label for="apellido1" class="form-label">Primer Apellido :</label>
+                        <input
+                        formControlName="apellido1"
+                        type="text"
+                        class="form-control" id="apellido1">
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="mb-3">
-                        <label for="otrosApellidos" class="form-label">Otros Apellidos :</label>
-                        <input type="text" class="form-control" id="otrosApellidos">
+                        <label for="apellido2" class="form-label">Otros Apellidos :</label>
+                        <input
+                        formControlName="apellido2"
+                        type="text"
+                        class="form-control" id="apellido2">
                     </div>
                 </div>
             </div>
@@ -69,30 +93,34 @@
                 <div class="col-3">
                     <div class="mb-3">
                         <label for="genero" class="form-label">Genero :</label>
-                            <select id="genero" class="form-select">
-                                <option>Masculino</option>
-                                <option>Femenino</option>
+                            <select formControlName="genero" id="genero" class="form-select">
+                                <option *ngFor="let tipo of tiposGenero" [ngValue]="tipo['CODIGO']">{{tipo['PARAMETROS']}}</option>
                             </select>
                     </div>
                 </div>
                 <div class="col-3">
                     <div class="mb-3">
                         <label for="telefono" class="form-label">Telefono :</label>
-                        <input type="text" class="form-control" id="telefono">
+                        <input
+                        formControlName="telefono"
+                        type="text"
+                        class="form-control" id="telefono">
                     </div>
                 </div>
                  <div class="col-3">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email :</label>
-                        <input type="email" class="form-control" id="email">
+                        <input
+                        formControlName="email"
+                        type="email"
+                        class="form-control" id="email">
                     </div>
                  </div>
                  <div class="col-3">
                     <div class="mb-3">
                         <label for="ciudad" class="form-label">Ciudad :</label>
-                        <select id="ciudad" class="form-select">
-                            <option>Bogota</option>
-                            <option>Chia</option>
+                        <select formControlName="ciudad" id="ciudad" class="form-select">
+                          <option *ngFor="let ciudad of ciudades" [ngValue]="ciudad['CODIGO']">{{ciudad['DANE']}}-{{ciudad['CIUDAD']}}</option>
                         </select>
                     </div>
                  </div>
@@ -100,11 +128,16 @@
             <div class="row justify-content-center">
                 <div class="col-3">
                   <div class="mb-3">
-                    <label for="rol" class="form-label">Rol :</label>
-                    <select id="rol" class="form-select">
-                      <option>Admin</option>
-                      <option>Director</option>
+                    <label for="id_rol" class="form-label">Rol :</label>
+                    <select formControlName="id_rol" id="id_rol" class="form-select">
+                      <option *ngFor="let rol of roles" [ngValue]="rol['ID_ROL']">{{rol['NOMBRE_ROL']}}</option>
                     </select>
+                  </div>
+                </div>
+                <div class="col-3">
+                  <div class="mb-3">
+                    <label for="pass" class="form-label">Password :</label>
+                    <input formControlName="pass" type="password" class="form-control" id="pass">
                   </div>
                 </div>
             </div>

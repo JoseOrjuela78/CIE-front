@@ -10,8 +10,8 @@ export class LoginService {
 
   private http = inject(HttpClient);
 
-  login(username:string, pass:string): Observable<any> {
-    return this.http.post<any>(URIS.usuarios.login, { username, pass })
+  login(email:string, pass:string): Observable<any> {
+    return this.http.post<any>(URIS.usuarios.login, { email, pass })
       .pipe(catchError((error) => throwError(() => error)));
   }
 };

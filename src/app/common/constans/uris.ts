@@ -10,8 +10,10 @@ export const URIS = {
 usuarios: {
   createUser: enviroment.base + 'api/usuarios',
   login: enviroment.base + 'api/usuarios/login',
-  updateUser: enviroment.base + 'api/usuarios'
-
+  updateUser: enviroment.base + 'api/usuarios',
+  getLista: enviroment.base + 'api/usuarios',
+  getCiudades: enviroment.base + 'api/usuarios-cities',
+  getRoles: enviroment.base + 'api/rol'
 },
 quotes:{
   createQuote: enviroment.base + 'api/quote',
