@@ -56,7 +56,7 @@ export class EditRolComponent implements OnInit {
     {
         "ID_ROL": 1,
         "ID_MENU": 1,
-        "ID_ACCION": 1
+        "ID_ACCION": null
     },
     {
         "ID_ROL": 1,
@@ -195,17 +195,18 @@ export class EditRolComponent implements OnInit {
         const row = {
             ID_ROL: null,
             ID_MENU: null,
-            ID_ACCION: null
+            ID_ACCION: null,
+            ESTADO: null
         }
 
         for(let i of this.datatable.dataRows){
             row.ID_ROL = i.idRol
             row.ID_MENU = i.idMenu
             for(let j of i.idAction){
-                row.ID_ACCION = null;
-                if(j.status) row.ID_ACCION = j.codigo;
-                    rows.push({...row})
-                    continue;
+                row.ID_ACCION = j.codigo;
+                row.ESTADO = j.status;
+                rows.push({...row})
+                continue;
             }
         };
         console.log({rows});

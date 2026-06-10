@@ -1,1 +1,75 @@
-<p>upload works!</p>
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">Cargues Masivos</h1>
+            <hr>
+            <div class="row">
+                <div class="mb-3">
+                    <label for="tables" class="form-label m-1">Select one table :</label>
+                    <select [(ngModel)]="tableSelected" (change)="putTable()" id="tables" class="form-select form-select-lg mb-3">
+                        <option selected disabled>Options</option>
+                        <option *ngFor="let table of arrTables" [ngValue]="table">{{table}}</option>
+                    </select>
+                </div>
+            <div class="row" *ngIf="tableSelected == 'Usuarios'">
+                <div class="col-3">
+                    <button type="button" class="btn btn-primary" (click)="openUserForm()">+ New user</button>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col" *ngFor="let e of arrTitles">{{e | uppercase}}</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="tableSelected == 'Usuarios' ">
+                        <tr *ngFor="let i of arrRows">
+                            <th scope="row">{{i.id_usuario}}</th>
+                            <th>{{i.identificacion}}</th>
+                            <th>{{i.username}}</th>
+                            <th>{{i.nombre}}</th>
+                            <th>{{i.apellido}}</th>
+                            <th>{{i.telefono}}</th>
+                            <th>{{i.celular}}</th>
+                            <th>{{i.email}}</th>
+                            <th>{{i.rol}}</th>
+                            <th>{{i.estado}}</th>
+                            <th>
+                            <button type="button" 
+                                    class="btn btn-primary" 
+                                    (click)="getUsuario({
+                                                                tipo_persona: i.tipo_persona,
+                                                                tipo_identificacion: i.tipo_identificacion,
+                                                                identificacion: i.identificacion,
+                                                                razon_social: i.razon_social,
+                                                                nombre1: i.nombre1,
+                                                                nombre2: i.nombre2,
+                                                                apellido1: i.apellido1,
+                                                                apellido2: i.apellido2,
+                                                                email: i.email,
+                                                                genero: i.genero,
+                                                                ciudad: i.ciudad,
+                                                                telefono: i.telefono,
+                                                                id_rol: i.id_rol,
+                                                                pass: i.pass
+                                                                })"
+                            >Update</button>
+                            </th>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="tableSelected != 'Usuarios' ">
+                        <tr *ngFor="let i of arrRows">
+                            <th scope="row">{{i.Nombre_tabla}}</th>
+                            <th>{{i.Total_rows}}</th>
+                            <th>{{i.Usuario}}</th>
+                            <th>{{i.Fecha_update}}</th>
+                            <th>{{i.estado}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

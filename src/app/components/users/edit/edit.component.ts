@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePassComponent } from './modal/changepass/changepass.component';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import Swal from 'sweetalert2';
 import { UserService } from '../services/users.service';
 import { IUser } from '../../../common/constans/models/IUser';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
@@ -16,6 +17,7 @@ import { IUser } from '../../../common/constans/models/IUser';
 })
 export class EditComponent implements OnInit{
 
+  @Input() userInput!:IUser;
   EditForm!: FormGroup;
   tiposPersona = [];
   tiposDocumento = [];
@@ -24,7 +26,7 @@ export class EditComponent implements OnInit{
   roles = [];
 
   private modalService = inject(NgbModal);
-  private userService = inject(UserService)
+  private userService = inject(UserService);
 
   ngOnInit(): void {
     this.EditForm = new FormGroup({
@@ -43,93 +45,44 @@ export class EditComponent implements OnInit{
       'id_rol': new FormControl(null, Validators.required),
       'pass': new FormControl(null, Validators.required)
     });
+    this.loadData();
+   }
 
-    this.getTipoPersona();
-    this.getTipoDocumento();
-    this.getTipoGenero();
-    this.getCiudades('CO');
-    this.getRoles();
+  loadData(){
+    Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Cargando listas...'
+
+        });
+    Swal.showLoading();
+
+    forkJoin({
+      tiposPersona: this.userService.getLista(1),
+      tiposDocumento: this.userService.getLista(2),
+      tiposGenero: this.userService.getLista(3),
+      ciudades: this.userService.getCiudades('CO'),
+      roles: this.userService.getRoles()
+    }).subscribe({
+      next: (res) => {
+        this.tiposPersona = res.tiposPersona.lista;
+        this.tiposDocumento = res.tiposDocumento.lista;
+        this.tiposGenero = res.tiposGenero.lista;
+        this.ciudades = res.ciudades.lista;
+        this.roles = res.roles.lista;
+        Swal.close();
+        
+    },
+     error: (err) => {
+        Swal.fire({
+          allowOutsideClick: true,
+          icon: 'error',
+          title: err.error.msg,
+          text: 'Error cargue de listas'
+        });
+      }
+    })
   }
-
-  getTipoPersona() {
-    this.userService.getLista(1).subscribe({
-      next: (data) => {
-        this.tiposPersona = data.lista;
-      },
-      error: (err) => {
-        Swal.fire({
-          allowOutsideClick: true,
-          icon: 'error',
-          title: err.error.msg,
-          text: 'Error Lista tipo persona'
-        });
-      }
-    });
-  };
-
-  getTipoDocumento() {
-    this.userService.getLista(2).subscribe({
-      next: (data) => {
-        this.tiposDocumento = data.lista;
-      },
-      error: (err) => {
-        Swal.fire({
-          allowOutsideClick: true,
-          icon: 'error',
-          title: err.error.msg,
-          text: 'Error Lista tipo documento'
-        });
-      }
-    });
-  };
-
-  getTipoGenero() {
-    this.userService.getLista(3).subscribe({
-      next: (data) => {
-        this.tiposGenero = data.lista;
-      },
-      error: (err) => {
-        Swal.fire({
-          allowOutsideClick: true,
-          icon: 'error',
-          title: err.error.msg,
-          text: 'Error Lista tipo genero'
-        });
-      }
-    });
-  };
-
-  getCiudades(codigoPais:string) {
-    this.userService.getCiudades(codigoPais).subscribe({
-      next: (data) => {
-        this.ciudades = data.lista;
-      },
-      error: (err) => {
-        Swal.fire({
-          allowOutsideClick: true,
-          icon: 'error',
-          title: err.error.msg,
-          text: 'Error Lista ciudades'
-        });
-      }
-    });
-  };
-
-  getRoles() {
-    this.userService.getRoles().subscribe({
-      next: (data) => {
-        this.roles = data.lista;
-      },
-      error: (err) => {
-        Swal.fire({
-          allowOutsideClick: true,
-          icon: 'error',
-          title: err.error.msg,
-          text: 'Error Lista Roles'
-        });
-      }
-    });
-  };
 
 
   createUser() {
