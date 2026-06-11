@@ -1,0 +1,26 @@
+export interface IQuote{
+  id_cotdetalle: number;
+  fecha_init: Date;
+  fecha_update: Date;
+  id_cotizacion: number;
+  id_detalle: number;
+  part_number: string;
+  proveedor: string;
+  descripcion: string;
+  cantidad: number;
+  largoCM: number;
+  anchoCM: number;
+  altoCM: number;
+  peso_kg: number;
+  peso_total: number;
+  costo_unitario: number;
+  costo_total: number;
+  zona: number;
+  flete: number;
+  moneda: string;
+  ajuste200USD: number;
+  costoLandedUSD: number;
+  preciolistaCOP: number;
+  preciototal: number;
+  id_usuario: number;
+  };

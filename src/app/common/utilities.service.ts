@@ -83,4 +83,9 @@ export class UtilitiesService{
           
     };
   };
+
+  //funcion para limitar decimales
+  decimales( num: number, dec: number){
+    return Number(Number(num).toFixed(dec));
+  };
 }
