@@ -1,0 +1,208 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <h1 class="card-title">Reporte Inventarios</h1>
+      <button type="button" class="btn btn-outline-danger" (click)="generarReporte()">Generar / Actualizar Reporte</button>
+    <div *ngIf="showForm">
+      <hr>
+      <form [formGroup]="searchForm" (ngSubmit)="firstPage()">
+          <div class="row">
+            <div class="col-2">
+              <label for="Bodega" class="form-label">Bodega</label>
+              <select formControlName="almacen" class="form-select mb-3" aria-label="Large select example">
+                <option selected value="">Todos</option>
+                <option value="M1">MEDELLIN</option>
+                <option value="M2">MEDELLIN OIKOS</option>
+              </select>
+            </div>
+            <div class="col-2">
+              <div class="mb-3">
+                <label for="Marca" class="form-label">Marca</label>
+                <input formControlName="marca" type="text" class="form-control" id="Marca" aria-describedby="Marca">
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="mb-3">
+                <label for="Referencia" class="form-label">Referencia</label>
+                <input formControlName="referencia" type="text" class="form-control" id="Referencia" aria-describedby="Referencia">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label for="Descripcion" class="form-label">Descripcion</label>
+                <input formControlName="descripcion" type="text" class="form-control" id="Descripcion" aria-describedby="Descripcion">
+              </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class="mb-3">
+              <label for="FechaEI" class="form-label">Entrada Inicial</label>
+              <input formControlName="fechaEI" type="date" class="form-control" id="FechaEI" aria-describedby="FechaEI">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="mb-3">
+              <label for="FechaEF" class="form-label">Entrada Final</label>
+              <input formControlName="fechaEF" type="date" class="form-control" id="FechaEF" aria-describedby="FechaEF">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="mb-3">
+              <label for="FechaSI" class="form-label">Salida Inicial</label>
+              <input formControlName="fechaSI" type="date" class="form-control" id="FechaSI" aria-describedby="FechaSI">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="mb-3">
+              <label for="FechaSF" class="form-label">Salida Final</label>
+              <input formControlName="fechaSF" type="date" class="form-control" id="FechaSF" aria-describedby="FechaSF">
+            </div>
+          </div>
+          </div>
+        <button type="button" class="btn btn-warning m-1" (click)="onClear()">Limpiar</button>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+      <hr>
+      <!--Table init-->
+      <table class="table">
+        <thead class="bg-primary text-white">
+          <tr>
+            <th scope="col"><button
+                             class="btn btn-primary">
+                             {{datatable.headerRows['Fecha_Reporte']}}
+                            </button></th>
+            <th scope="col"><button
+                            class="btn btn-primary"
+                            (click)="columnFunction('Marca')"
+                            >{{datatable.headerRows['Marca']}}
+                            </button></th>
+            <th scope="col"><button
+                            class="btn btn-primary"
+                            (click)="columnFunction('Referencia ')"
+                            >{{datatable.headerRows['Referencia']}}
+                            </button></th>
+            <th scope="col"><button
+                             class="btn btn-primary"
+                             (click)="columnFunction('Descripcion')">
+                             {{datatable.headerRows['Descripcion']}}
+                            </button></th>
+            <th scope="col"><button
+                             class="btn btn-primary"
+                             (click)="columnFunction('Cantidad_Disponible')">
+                             {{datatable.headerRows['Cantidad_Disponible']}}
+                            </button></th>
+            <th scope="col"><button
+                             class="btn btn-primary"
+                             (click)="columnFunction('Cantidad_Vendida')">
+                             {{datatable.headerRows['Cantidad_Vendida']}}
+                            </button></th>
+            <th scope="col"><button
+                             class="btn btn-primary"
+                             (click)="columnFunction('FechaEntrada')">
+                             {{datatable.headerRows['Fecha_Entrada']}}
+                            </button></th>
+            <th scope="col"><button
+                             class="btn btn-primary"
+                             (click)="columnFunction('FechaSalida')">
+                             {{datatable.headerRows['Fecha_Salida']}}
+                            </button></th>
+            <th scope="col"><button
+                             class="btn btn-primary"
+                             (click)="columnFunction('Almacen')">
+                             {{datatable.headerRows['Almacen']}}
+                            </button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of datatable.dataRows" class="font11">
+            <td>{{row.FechaReporte | date:'dd/MM/yyyy'}}</td>
+            <td>{{row.Marca}}</td>
+            <td>{{row.Referencia}}</td>
+            <td>{{row.Descripcion}}</td>
+            <td>{{row.Cantidad_Disponible }}</td>
+            <td>{{row.Cantidad_Vendida}}</td>
+            <td>{{row.FechaEntrada | date:'dd/MM/yyyy'}}</td>
+            <td>{{row.FechaSalida | date:'dd/MM/yyyy'}}</td>
+            <td>{{row.Almacen}}</td>
+          </tr>
+         </tbody>
+      </table>
+      <!--Table init-->
+      <!--Paginacion init-->
+      <nav class="font11" aria-label="Page navigation example">
+        <div class="row">
+          <div class="col-3 mt-1">
+            <select [(ngModel)]="registrosXPagina" (ngModelChange)="firstPage()" class="form-select form-select-sm" aria-label="page size select">
+              <option *ngFor="let cant of cantRegistros" [ngValue]="cant">{{ cant }}</option>
+            </select>
+            <small class="text-body-secondary">Registros de {{ totalRegistros }} en total.</small>
+          </div>
+
+          <div class="col-6">
+          <ul class="pagination">
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="firstPage"
+            (click)="firstPage()"
+            >
+            <span aria-hidden="true">&lsaquo;</span>
+            </button>
+          </li>
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="Previous"
+            (click)="previousPage()"
+            [disabled] = "buttons.previous"
+            >
+            <span aria-hidden="true">&laquo;</span>
+          </button>
+          </li>
+           <!--Numeros-->
+          <li class="page-item" [ngClass]="{'active': paginaActual===paginaActual}">
+            <a class="page-link"
+               *ngIf="!showPages"
+            >{{paginaActual}}</a></li>
+            <li
+            class="page-item"
+            [ngClass]="{'active': paginaActual===pag}"
+            *ngFor="let pag of paginasMostrar"
+            >
+              <a
+              class="page-link"
+              *ngIf="showPages"
+              (click)="cambiarPagina(pag)"
+              >{{pag}}</a></li>
+          <li class="page-item">
+            <button
+            class="page-link"
+            aria-label="Next"
+            (click)="nextPage()"
+            [disabled] = "buttons.next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </button>
+          </li>
+          <li class="page-item">
+          <button
+          class="page-link"
+          aria-label="lastPage"
+          (click)="lastPage()"
+          >
+          <span aria-hidden="true">&rsaquo;</span>
+          </button>
+          </li>
+        </ul>
+        </div>
+        <div class="col-3 text-end">
+          <button type="button" (click)="exportReport()" class="btn btn-outline-primary">Exportar</button>
+        </div>
+        </div>
+      </nav>
+     <!--Paginacion end-->
+     </div>
+    </div>
+  </div>
+</div>
