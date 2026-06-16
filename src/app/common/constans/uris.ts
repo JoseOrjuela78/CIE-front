@@ -11,9 +11,15 @@ usuarios: {
   createUser: enviroment.base + 'api/usuarios',
   login: enviroment.base + 'api/usuarios/login',
   updateUser: enviroment.base + 'api/usuarios',
-  getLista: enviroment.base + 'api/usuarios',
-  getCiudades: enviroment.base + 'api/usuarios-cities',
-  getRoles: enviroment.base + 'api/rol'
+  statusUser: enviroment.base + 'api/usuarios/status',
+  getUsers: enviroment.base + 'api/usuarios/get-pag',
+  getLista: enviroment.base + 'api/listas',
+  getCiudades: enviroment.base + 'api/cities',
+  getRoles: enviroment.base + 'api/get-roles',
+  getMenus: enviroment.base + 'api/rol/schema',
+  createPermitsRol: enviroment.base + 'api/create-permits-rol',
+  createRol: enviroment.base + 'api/create-rol',
+  statusRol: enviroment.base + 'api/rol/status'
 },
 quotes:{
   createQuote: enviroment.base + 'api/quote',

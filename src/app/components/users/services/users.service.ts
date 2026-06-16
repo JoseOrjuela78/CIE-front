@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { URIS } from '../../../common/constans/uris';
 import { IUser } from '../../../common/constans/models/IUser';
+import { IUserFilters } from '../../../common/constans/models/IUserFilters';
+import { IRolesFilters } from '../../../common/constans/models/IRolesFilters';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +18,21 @@ export class UserService {
       .pipe(catchError((error) => throwError(() => error)));
   };
 
+  updateUser(user: IUser): Observable<any> {
+    return this.http.put<any>(URIS.usuarios.updateUser, user)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  statusUser(identificacion: string, estado:boolean): Observable<any> {
+    return this.http.put<any>(URIS.usuarios.statusUser, { identificacion, estado })
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  getUsers(filters: IUserFilters): Observable<any> {
+    return this.http.put<any>(URIS.usuarios.getUsers, filters)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
   getLista(idLista:number): Observable<any> {
     return this.http.get<any>(URIS.usuarios.getLista + "/" + idLista)
       .pipe(catchError((error) => throwError(() => error)));
@@ -26,8 +43,35 @@ export class UserService {
       .pipe(catchError((error) => throwError(() => error)));
   };
 
-  getRoles(): Observable<any> {
-    return this.http.get<any>(URIS.usuarios.getRoles)
+  getRoles(filters: IRolesFilters): Observable<any> {
+    return this.http.put<any>(URIS.usuarios.getRoles, filters)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  getMenus(idRol:number): Observable<any> {
+    return this.http.get<any>(URIS.usuarios.getMenus + "/" + idRol)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  createPermitsRol(permisos: string): Observable<any> {
+    const body = {
+      permisos
+    };
+    return this.http.post<any>(URIS.usuarios.createPermitsRol, body)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  createRol(nombre_rol: string,descripcion: string): Observable<any> {
+    const body = {
+      nombre_rol,
+      descripcion
+    };
+    return this.http.post<any>(URIS.usuarios.createRol, body)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  statusRol(id_rol: string, estado: number): Observable<any> {
+    return this.http.put<any>(URIS.usuarios.statusRol, { id_rol, estado })
       .pipe(catchError((error) => throwError(() => error)));
   };
 };

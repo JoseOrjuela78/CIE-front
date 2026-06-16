@@ -1,11 +1,18 @@
 <div id="form" class="card">
   <div class="card-body">
     <div class="row justify-content-center text-center">
-      <h3 class="card-title">USUARIOS</h3>
+         <h3 bu class="card-title">USUARIOS</h3>
+         <button type="button" [ngClass]="{'btn':true,'btn-light':statusUser === 'Pendiente', 'btn-success': statusUser === 'Activo' , 'btn-danger': statusUser === 'Inactivo' }">{{statusUser}}</button>
     </div>
     <div class="card-body">
         <form [formGroup]="EditForm" (ngSubmit)="createUser()">
             <div class="row">
+                <div class="col-4">
+                    <div class="mb-3">
+                    <label for="identificacion" class="form-label">Identificacion :</label>
+                    <input formControlName="identificacion" type="text" class="form-control" id="identificacion" (blur)="getUser()">
+                    </div>
+                </div>
                 <div class="col-4">
                     <div class="mb-3">
                         <label for="tipoPersona" class="form-label">Tipo Persona :</label>
@@ -14,7 +21,7 @@
                         id="tipoPersona"
                         class="form-select"
                         >
-                          <option *ngFor="let tipo of tiposPersona" [ngValue]="tipo['CODIGO']">{{tipo['VALOR']}}</option>
+                        <option *ngFor="let tipo of tiposPersona" [ngValue]="tipo['CODIGO']">{{tipo['VALOR']}}</option>
 
                         </select>
                     </div>
@@ -28,15 +35,6 @@
                         class="form-select">
                           <option *ngFor="let tipo of tiposDocumento" [ngValue]="tipo['CODIGO']">{{tipo['PARAMETROS']}}</option>
                         </select>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="mb-3">
-                        <label for="identificacion" class="form-label">Identificacion :</label>
-                        <input
-                        formControlName="identificacion"
-                        type="text"
-                        class="form-control" id="identificacion">
                     </div>
                 </div>
             </div>
@@ -134,7 +132,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" *ngIf="passInput">
                   <div class="mb-3">
                     <label for="pass" class="form-label">Password :</label>
                     <input formControlName="pass" type="password" class="form-control" id="pass">
@@ -142,10 +140,10 @@
                 </div>
             </div>
             <div class="row justify-content-center text-center">
-              <button type="submit" class="btn btn-outline-primary m-1">Crear</button>
-              <button type="button" class="btn btn-outline-success m-1">Actualizar</button>
+              <button type="submit" class="btn btn-outline-primary m-1" [disabled]="createButton">Crear</button>
+              <button type="button" (click)="updateUser()" class="btn btn-outline-secondary m-1">Actualizar</button>
               <button type="button" (click)="openChangePass()" class="btn btn-outline-warning m-1">Cambiar Password</button>
-              <button type="button" class="btn btn-outline-danger m-1">Bloquear</button>
+              <button type="button" (click)="stsUser()" [ngClass]="{'btn': true, 'btn-outline-success': statusButton == 'Activar','btn-outline-danger': statusButton == 'Inactivar','m-1': true}">{{statusButton}}</button>
             </div>
         </form>
     </div>

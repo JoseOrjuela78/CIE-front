@@ -7,17 +7,13 @@
       <form [formGroup]="searchForm" (ngSubmit)="firstPage()">
         <div class="row">
             <div class="col-2">
-              <label for="idrol" class="form-label">Id rol :</label>
-              <select formControlName="idrol" class="form-select mb-3" aria-label="Large select example">
-                <option selected value="">Todos</option>
-                <option value="1">1 - Super Admin</option>
-                <option value="2">2 - Director</option>
-              </select>
+              <label for="id_rol" class="form-label">Id rol :</label>
+              <input formControlName="id_rol" type="number" class="form-control" id="id_rol" aria-describedby="id_rol">
             </div>
             <div class="col-3">
               <div class="mb-3">
-                <label for="titulo" class="form-label">Titulo :</label>
-                <input formControlName="titulo" type="text" class="form-control" id="Titulo" aria-describedby="titulo">
+                <label for="nombre_rol" class="form-label">Nombre Rol :</label>
+                <input formControlName="nombre_rol" type="text" class="form-control" id="nombre_rol" aria-describedby="nombre_rol">
               </div>
             </div>
             <div class="col-5">
@@ -27,8 +23,8 @@
               </div>
             </div>
             <div class="col-2">
-              <label for="Estado" class="form-label">Estado :</label>
-              <select formControlName="idrol" class="form-select mb-3" aria-label="Large select example">
+              <label for="estado" class="form-label">Estado :</label>
+              <select formControlName="estado" class="form-select mb-3" aria-label="Large select example">
                 <option selected value="">Todos</option>
                 <option value="1">Activo</option>
                 <option value="0">Inactivo</option>
@@ -37,45 +33,44 @@
         </div>
         <button type="button" class="btn btn-warning m-1 boton" (click)="onClear()">Limpiar</button>
         <button type="submit" class="btn btn-primary m-1 boton">Buscar</button>
-        <button type="button" class="btn btn-success m-1 boton" (click)="openEditRol(null,null)">Crear</button>
+        <button type="button" class="btn btn-success m-1 boton" (click)="openEditRol(0,'',false)">Crear</button>
       </form>
       <hr>
       <!--Table init-->
       <table class="table">
         <thead>
-          <tr>
+          <tr class="text-center">
             <th class="bg-primary text-white" scope="col"><button
                              class="btn btn-primary">
                              {{datatable.headerRows['Idrol']}}
                             </button></th>
             <th class="bg-primary text-white" scope="col"><button
                             class="btn btn-primary"
-                            (click)="columnFunction('titulo')"
                             >{{datatable.headerRows['Titulo']}}
                             </button></th>
             <th class="bg-primary text-white" scope="col"><button
                             class="btn btn-primary"
-                            (click)="columnFunction('descripcion')"
                             >{{datatable.headerRows['Descripcion']}}
                             </button></th>
             <th class="bg-primary text-white" scope="col"><button
                              class="btn btn-primary"
-                             (click)="columnFunction('estado')">
+                             >
                              {{datatable.headerRows['Estado']}}
                             </button></th>
             <th class="bg-primary text-white" scope="col"><button
                              class="btn btn-primary">
                              {{datatable.headerRows['Opciones']}}
                             </button></th>
-          </tr> 
+          </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let row of datatable.dataRows" class="font11">
-            <td>{{row.idrol}}</td>
-            <td>{{row.titulo}}</td>
-            <td>{{row.descripcion}}</td>
-            <td>{{row.estado }}</td>
-            <td><button (click)="openEditRol(row.idrol,row.titulo)"  class="btn btn-primary">editar</button></td>
+          <tr *ngFor="let row of datatable.dataRows" class="font11 text-center">
+            <td>{{row.ID_ROL}}</td>
+            <td>{{row.NOMBRE_ROL}}</td>
+            <td>{{row.DESCRIPCION}}</td>
+            <td *ngIf="row.ESTADO">Activo</td>
+            <td *ngIf="!row.ESTADO">Inactivo</td>
+            <td><button (click)="openEditRol(row.ID_ROL,row.NOMBRE_ROL,row.ESTADO)"  class="btn btn-primary">editar</button></td>
           </tr>
          </tbody>
       </table>

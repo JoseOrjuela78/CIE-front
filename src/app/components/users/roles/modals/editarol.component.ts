@@ -1,9 +1,10 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, inject, Input, OnInit } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { IRoles } from "../../../../common/constans/models/IRoles";
 import { DataTable } from "../../../../common/constans/models/IDataTable";
-import { Element } from "@angular/compiler";
+import Swal from 'sweetalert2';
+import { UserService } from "../../services/users.service";
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-editarol',
@@ -17,15 +18,19 @@ export class EditRolComponent implements OnInit {
     menusArr:any = [];
     actionsArr:any=[];
     titulo!: string;
+    comentarios!: string;
     estado: boolean = false;
     checkInput: boolean = false;
     datatable!: DataTable;
     idSeleccionado:number = 0;
 
-    @Input() dataRol!: any;
+  @Input() dataRol!: any;
+  private userService = inject(UserService);
+  private cd = inject(ChangeDetectorRef);
+  private activeModal = inject(NgbActiveModal);
 
-
-    ngOnInit(): void {
+  ngOnInit(): void {
+        this.estado = this.dataRol.estado;
         this.datatable = {
         headerRows: {
                     Titulo: "Titulo",
@@ -34,147 +39,32 @@ export class EditRolComponent implements OnInit {
                     dataRows: []
         };
         this.titulo = this.dataRol.titulo;
-        this.getActions();
-        if(this.dataRol.idRol != null){
-            this.getMenusRol(this.dataRol.idRol);
-        }else{
-            this.getMenus(this.dataRol.idRol);
-        }
 
-    };
-
-    getActions(){
-        const result = [{codigo: 1, valor: 'Obtener'},{codigo: 2, valor: 'Crear'},{codigo: 3, valor: 'Actualizar'},{codigo: 4, valor: 'Eliminar'}]
-        result.forEach((Element:any) =>{
-            const value = {...Element, status:false};
-            this.actionsArr.push(value);
-        });
-    };
-
-    getMenusRol(idRol:number){
-        const getMenusRol = [
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 1,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 1,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 1,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 1,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 2,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 2,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 2,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 2,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 3,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 3,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 3,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 3,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 4,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 4,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 4,
-        "ID_ACCION": null
-    },
-    {
-        "ID_ROL": 1,
-        "ID_MENU": 4,
-        "ID_ACCION": null
-    }
-    ];
-     this.getMenus(idRol);
-
-     for( let i of getMenusRol) {
-           const {ID_MENU,ID_ACCION} = i;
-           for(let e in this.datatable.dataRows){
-            if(this.datatable.dataRows[e].idMenu === ID_MENU ){
-                for(let i in this.datatable.dataRows[e].idAction){
-                    if(this.datatable.dataRows[e].idAction[i].codigo === ID_ACCION){
-                        this.datatable.dataRows[e].idAction[i].status = true;
-                    };
-                };
-            };
-        };
-
-
-     };
-    console.log(this.datatable.dataRows);
+    if (this.dataRol.idRol != 0)this.getMenus(this.dataRol.idRol);
    };
 
+  //Construye objeto base
+  getMenus(idRol:number) {
+    this.userService.getMenus(idRol).subscribe({
+      next: (res) => {
+        this.datatable.dataRows = res.rolSchema;
+        this.cd.detectChanges();
+        console.log(this.datatable.dataRows);
+      },
+      error: (err) => {
 
-    //Construye objeto base
-    getMenus(idRol:number | null){
-        const getMenus = [{id_menu: 1, titulo: 'Quotes'},{id_menu: 2, titulo: 'Reports'},{id_menu: 3, titulo: 'Upload'},{id_menu: 4, titulo: 'Users'}];
-        getMenus.forEach(Element =>{
+                           Swal.fire({
+                             allowOutsideClick: true,
+                             icon: 'error',
+                             title: err.error.msg,
+                             text: `Error cargardo menus`
+                           });
+                          }
+    })
 
-            const menu :IRoles = {
-                idRol,
-                titulo: Element.titulo,
-                idMenu: Element.id_menu,
-                idAction: this.actionsArr.map((x:any)=>({...x}))
-            };
+}
 
-            this.menusArr.push(menu);
-        })
-
-       this.datatable.dataRows = this.menusArr;
-       console.log(this.datatable.dataRows);
-    }
-
-    updatePermiso(idmenu:number,codigo:number,permiso:boolean){
-        console.log({idmenu,codigo,permiso});
+updatePermiso(idmenu:number,codigo:number,permiso:boolean){
 
         for(let e in this.datatable.dataRows){
             if(this.datatable.dataRows[e].idMenu === idmenu ){
@@ -187,28 +77,90 @@ export class EditRolComponent implements OnInit {
             };
         };
       console.log(this.datatable.dataRows);
-    };
+};
 
-    guardarRol(){
-        //Backend
-        const rows = [];
-        const row = {
-            ID_ROL: null,
-            ID_MENU: null,
-            ID_ACCION: null,
-            ESTADO: null
-        }
+guardarRol() {
 
-        for(let i of this.datatable.dataRows){
-            row.ID_ROL = i.idRol
-            row.ID_MENU = i.idMenu
-            for(let j of i.idAction){
-                row.ID_ACCION = j.codigo;
-                row.ESTADO = j.status;
-                rows.push({...row})
-                continue;
-            }
-        };
-        console.log({rows});
-    };
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Actualizando permisos...'
+    });
+    Swal.showLoading();
+
+    const permits = JSON.stringify(this.datatable.dataRows);
+    this.userService.createPermitsRol(permits).subscribe({
+      next: (res) => {
+        const status = this.estado ? 1 : 0;
+        this.userService.statusRol(this.dataRol.idRol, status).subscribe({
+          next: (result) => {
+            this.activeModal.close('actualizado')
+            Swal.fire({
+              allowOutsideClick: true,
+              icon: 'info',
+              title: res.msg,
+              text: res.msg,
+            });
+          },
+          error: (err) => {
+
+            Swal.fire({
+              allowOutsideClick: true,
+              icon: 'error',
+              title: err.error.msg,
+              text: `Error actualizando estado rol`
+            });
+          }
+         })
+
+       },
+      error: (err) => {
+
+      Swal.fire({
+        allowOutsideClick: true,
+        icon: 'error',
+        title: err.error.msg,
+        text: `Error cargardo permisos rol`
+      });
+    }
+  })
+  };
+
+  crearRol() {
+
+    if (!this.titulo || !this.comentarios) {
+      Swal.fire({
+        allowOutsideClick: true,
+        icon: 'error',
+        title: 'debe completar titulo y/o comentarios',
+        text: `Error creando rol`
+      });
+      return;
+    }
+
+    this.userService.createRol(this.titulo, this.comentarios).subscribe({
+      next: (res) => {
+        this.activeModal.close('actualizado')
+        Swal.fire({
+          allowOutsideClick: true,
+          icon: 'info',
+          title: `id_rol: ${res.id_rol}`,
+          text: res.msg
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          allowOutsideClick: true,
+          icon: 'error',
+          title: err.error.msg,
+          text: `Error creando rol`
+        });
+      }
+    })
+  }
+
+  cancelar() {
+    this.activeModal.dismiss('cancelado');
+  };
+
 };

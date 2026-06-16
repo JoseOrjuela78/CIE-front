@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { DataTable } from '../../../common/constans/models/IDataTable';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UtilitiesService } from '../../../common/utilities.service';
@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditRolComponent } from './modals/editarol.component';
+import { UserService } from '../services/users.service';
 
 
 @Component({
@@ -33,18 +34,21 @@ export class RolesComponent implements OnInit {
 
   private utils = inject(UtilitiesService);
   private modalService = inject(NgbModal);
+  private userService = inject(UserService);
+  private cd = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-
-    this.searchForm = new FormGroup({
-        'ordenarPor': new FormControl("Marca"),
-        'dirOrden': new FormControl("ASC"),
-        'pageNumer': new FormControl(1),
-        'pageSize': new FormControl(10),
-        'idrol' : new FormControl(null),
-        'titulo' : new FormControl(null),
+     this.searchForm = new FormGroup({
+        'ordercolumn': new FormControl("Marca"),
+        'orderdirection': new FormControl("ASC"),
+        'pagenumber': new FormControl(1),
+        'pagesize': new FormControl(10),
+        'id_rol' : new FormControl(null),
+        'nombre_rol' : new FormControl(null),
         'descripcion' : new FormControl(null),
-        'Estado' : new FormControl(null)
+        'estado': new FormControl(null),
+        'fechainicio': new FormControl(null),
+        'fechafinal': new FormControl(null)
     });
 
     this.datatable = {
@@ -55,22 +59,16 @@ export class RolesComponent implements OnInit {
                     Estado: "Estado",
                     Opciones: "Opciones",
                   },
-                    dataRows: [{idrol:1,titulo:'superAdmin',descripcion:'super administrador',estado:'Activo'}]
+                  dataRows: []
     };
-
+    this.onSubmit();
     this.buttons = {
                     previous: false,
                     next: false
     };
+
   };
 
-  generarReporte(){
-
-  }
-
-  columnFunction(colunm:string){
-
-  }
 
   onSubmit() {
     Swal.fire({
@@ -80,30 +78,52 @@ export class RolesComponent implements OnInit {
     });
     Swal.showLoading();
 
-    this.searchForm.get('pageNumer')?.setValue(this.paginaActual);
-    this.searchForm.get('pageSize')?.setValue(this.registrosXPagina);
+    this.searchForm.get('pagenumber')?.setValue(this.paginaActual);
+    this.searchForm.get('pagesize')?.setValue(this.registrosXPagina);
 
-  // obtiene reporte
-      this.datatable.dataRows = []; //response.body.datos;
-      this.totalRegistros = 0; //response.body.TotalRegistros;
-      this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pageSize, this.totalRegistros);
-      this.verifyPaginationControls();
-      
-      const {currentPage, showPages, setPages} = this.utils.limitPagination(this.paginas,this.paginaActual,this.nextFunction,this.lastPageFlag);
+    this.userService.getRoles(this.searchForm.value).subscribe({
+      next: (res) => {
 
-      this.showPages = showPages;
-      this.paginaActual = currentPage;
-      this.paginasMostrar = setPages;
+        // obtiene reporte
+        this.datatable.dataRows = res.lista;
+        this.totalRegistros = res.totalRegistros;
+        this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pagesize, this.totalRegistros);
+        this.verifyPaginationControls();
 
-    }
+        const { currentPage, showPages, setPages } = this.utils.limitPagination(this.paginas, this.paginaActual, this.nextFunction, this.lastPageFlag);
 
-    onClear() {
+        this.showPages = showPages;
+        this.paginaActual = currentPage;
+        this.paginasMostrar = setPages;
+        this.cd.detectChanges();
+        Swal.close();
+      },
+      error: (err) => {
+        this.datatable.dataRows = [];
+        this.cd.detectChanges();
+                     Swal.fire({
+                       allowOutsideClick: true,
+                       icon: 'error',
+                       title: err.error.msg,
+                       text: `Error cargardo roles`
+                     });
+                    }
+
+    });
+
+
+
+  };
+
+
+
+  onClear() {
       this.datatable.dataRows = [];
       this.paginas = [];
       return this.searchForm.reset();
-    };
+  };
 
-    verifyPaginationControls() {
+  verifyPaginationControls() {
         if (this.paginaActual < 1) {
           this.buttons.previous = true;
           this.buttons.next = false;
@@ -128,7 +148,6 @@ export class RolesComponent implements OnInit {
 
   cambiarPagina(pagina: number) {
     this.paginaActual = pagina;
-    this.searchForm.get('operacion')?.setValue(3);//consultar
     this.onSubmit();
   };
 
@@ -159,14 +178,25 @@ export class RolesComponent implements OnInit {
 
   }
 
-  openEditRol(idRol:number | null, titulo:string|null) {
+  openEditRol(idRol: number | undefined, titulo: string | undefined, estado: boolean | undefined) {
       const modalref = this.modalService.open(EditRolComponent);
       modalref.componentInstance.dataRol = {
         idRol:idRol,
         titulo:titulo,
-        estado: 0
- };
+        estado: estado
+    };
+
+    // Capturar resultado al cerrar
+    modalref.result.then(
+      (result) => {
+        this.onSubmit();
+        // aquí puedes refrescar lista, guardar cambios, etc.
+      },
+      (reason) => {
+        console.log('Modal cancelado:', reason);
+      }
+    );
 }
 
 }
- 
+
