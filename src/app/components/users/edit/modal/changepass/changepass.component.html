@@ -5,16 +5,32 @@
     </div>
   </div>
   <div class="card-body">
-<form>
+<form [formGroup]="changePassForm" (ngSubmit)="changePassword()">
   <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <label for="pass1" class="form-label">Password</label>
+    <input formControlName="pass1" type="password" class="form-control" id="pass1">
+    <div *ngIf="changePassForm.get('pass1')?.errors && changePassForm.get('pass1')?.touched">
+      <div *ngIf="changePassForm.get('pass1')?.errors?.['required']" id="emailHelp" class="form-text text-danger">
+        Ingrese un nuevo password
+      </div>
+      <div *ngIf="changePassForm.get('pass1')?.errors?.['minlength'] || changePassForm.get('pass1')?.errors?.['maxlength']" id="emailHelp" class="form-text text-danger">
+        Password debe tener 8 caracteres
+      </div>
+      <div *ngIf="changePassForm.get('pass1')?.errors?.['pattern']" id="emailHelp" class="form-text text-danger">
+        Debe tener al menos 1 mayúscula y 1 carácter especial
+      </div>
+    </div>
+    
   </div>
   <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Confirma Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <label for="pass2" class="form-label">Confirma Password</label>
+    <input formControlName="pass2" type="password" class="form-control" id="pass2">
+      <div *ngIf="changePassForm.errors?.['fieldsNotMatch'] && changePassForm.get('pass2')?.touched" id="emailHelp" class="form-text text-danger">
+          Los passwords ingresados deben ser iguales
+      </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary m-1" [disabled]="changePassForm.invalid">Enviar</button>
+  <button type="button" class="btn btn-danger" (click)="cancelar()">Cancelar</button>
 </form>
      </div>
 </div>

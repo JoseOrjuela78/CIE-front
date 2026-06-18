@@ -338,7 +338,20 @@ stsUser() {
 
 
 openChangePass() {
-    const modalref = this.modalService.open(ChangePassComponent);
+    const modalref = this.modalService.open(ChangePassComponent,{ backdrop: 'static', // evita cerrar al hacer clic fuera
+                                                                  keyboard: false     // desactiva cerrar con ESC
+                                                                 });
+    modalref.componentInstance.data = {identificacion: '123', login: false };//this.EditForm.value.identificacion;
+     // Capturar resultado al cerrar
+    modalref.result.then(
+      (result) => {
+        console.log('Modal actualizado:', result);
+        // aquí puedes refrescar lista, guardar cambios, etc.
+      },
+      (reason) => {
+        console.log('Modal cancelado:', reason);
+      }
+    );
 };
 
 }
