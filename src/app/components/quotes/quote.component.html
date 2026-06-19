@@ -1,55 +1,60 @@
 <div class="row m-5">
-    <div class="col-12 mb-0 text-center">
-        <h2>COTIZACION NUMERO: {{id_quote}} </h2>
-    </div>
+  <div class="col-12 mb-0 text-center">
+    <h2>COTIZACION NUMERO: {{id_quote}} </h2>
+  </div>
 
-    <form [formGroup]="formBrands">
-        <div class="row">
-            <div class="col-6 mb-1">
-                <div class="input-group flex-nowrap">
-                    <input (blur)="createQuote()" formControlName="cliente" type="text" class="form-control" placeholder="Cliente" aria-label="Username" aria-describedby="addon-wrapping">
-                </div>
-            </div>
-            <div class="col-6 mb-1">
-                <div *ngIf="statusForms" class="m-1">
-                    <select class="form-select" size="4" aria-label="size 3 select example">
-                      <option *ngFor=" let e of brandsList" value="1">{{e.id_proveedor | uppercase}} <=> {{e.proveedor | uppercase}}</option>
-                    </select>
-                </div>
-
-            </div>
+  <form [formGroup]="formBrands">
+    <div class="row">
+      <div class="col-6 mb-1">
+        <div class="input-group flex-nowrap">
+          <input (blur)="createQuote()" formControlName="cliente" type="text" class="form-control" placeholder="Cliente"
+            aria-label="Username" aria-describedby="addon-wrapping">
+        </div>
+      </div>
+      <div class="col-6 mb-1">
+        <div *ngIf="statusForms" class="m-1">
+          <select class="form-select" size="4" aria-label="size 3 select example">
+            <option *ngFor=" let e of brandsList" value="1">{{e.id_proveedor | uppercase}} <=> {{e.proveedor |
+                uppercase}}</option>
+          </select>
         </div>
 
+      </div>
+    </div>
 
 
-        <div *ngIf="statusForms" class="row">
-            <div class="col-6 mb-1">
-                <div class="input-group flex-nowrap mb-2">
-                    <input formControlName="searchPart" type="text" class="form-control" placeholder="Part-number" aria-label="Username" aria-describedby="addon-wrapping" (change)="getRefs()">
-                </div>
-                <div class="row">
-                    <div class="col-10">
-                        <div class="form-floating">
-                            <select formControlName="part-number" class="form-select" aria-label="Default select example">
-              <option *ngFor="let e of refsList" id="floatingSelect" [ngValue]="e.id_detalle">ref: {{e.part_number}} : {{e.herramienta}} marca : {{e.proveedor | uppercase}}</option>
+
+    <div *ngIf="statusForms" class="row">
+      <div class="col-6 mb-1">
+        <div class="input-group flex-nowrap mb-2">
+          <input formControlName="searchPart" type="text" class="form-control" placeholder="Part-number"
+            aria-label="Username" aria-describedby="addon-wrapping" (change)="getRefs()">
+        </div>
+        <div class="row">
+          <div class="col-10">
+            <div class="form-floating">
+              <select formControlName="part-number" class="form-select" aria-label="Default select example">
+                <option *ngFor="let e of refsList" id="floatingSelect" [ngValue]="e.id_detalle">ref: {{e.part_number}} :
+                  {{e.herramienta}} marca : {{e.proveedor | uppercase}}</option>
               </select>
-                            <label for="floatingSelect">select menu part_number</label>
-                        </div>
-                    </div>
-                    <div *ngIf="addButton" class="col-1 p-0">
-
-                        <button type="button" class="btn btn-danger mt-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" (click)="this.cotizarButton = true">
-                          <a type="button" class="pointer" style="color: #f7f6f4">
-                            <mat-icon>note_add</mat-icon>
-                            </a>
-                            </button>
-                    </div>
-                </div>
+              <label for="floatingSelect">select menu part_number</label>
             </div>
-            <div class="col-6 mb-1">
+          </div>
+          <div *ngIf="addButton" class="col-1 p-0">
 
-                <div *ngIf="statusForms" class="m-1">
-                    <!--
+            <button type="button" class="btn btn-danger mt-1" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              data-bs-whatever="@mdo" (click)="this.cotizarButton = true">
+              <a type="button" class="pointer" style="color: #f7f6f4">
+                <mat-icon>note_add</mat-icon>
+              </a>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 mb-1">
+
+        <div *ngIf="statusForms" class="m-1">
+          <!--
                     <table class="table">
                         <thead>
                             <tr>
@@ -68,82 +73,86 @@
                         </tbody>
                     </table>
                     -->
-                </div>
-            </div>
         </div>
+      </div>
+    </div>
 
 
-    </form>
+  </form>
 
 </div>
 
 
 
 <div class="row">
-    <div class="col-12">
-        <mat-card>
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <div class="col-12">
+    <mat-card>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-                <!-- Position Column -->
-                <ng-container matColumnDef="Index">
-                    <th class="header" mat-header-cell *matHeaderCellDef> No. </th>
-                    <td mat-cell *matCellDef="let element"> {{element.index}} </td>
-                </ng-container>
+        <!-- Position Column -->
+        <ng-container matColumnDef="Index">
+          <th class="header" mat-header-cell *matHeaderCellDef> No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.index}} </td>
+        </ng-container>
 
-                <ng-container matColumnDef="Part_number">
-                    <th class="header" mat-header-cell *matHeaderCellDef> Part_number </th>
-                    <td mat-cell *matCellDef="let element"> {{element.part_number}} </td>
-                </ng-container>
+        <ng-container matColumnDef="Part_number">
+          <th class="header" mat-header-cell *matHeaderCellDef> Part_number </th>
+          <td mat-cell *matCellDef="let element"> {{element.part_number}} </td>
+        </ng-container>
 
 
-                <ng-container matColumnDef="Brand">
-                    <th class="header" mat-header-cell *matHeaderCellDef> Brand </th>
-                    <td mat-cell *matCellDef="let element"> {{element.proveedor | uppercase}} </td>
-                </ng-container>
+        <ng-container matColumnDef="Brand">
+          <th class="header" mat-header-cell *matHeaderCellDef> Brand </th>
+          <td mat-cell *matCellDef="let element"> {{element.proveedor | uppercase}} </td>
+        </ng-container>
 
-                <ng-container matColumnDef="Description">
-                    <th class="header" mat-header-cell *matHeaderCellDef> Description </th>
-                    <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
-                </ng-container>
+        <ng-container matColumnDef="Description">
+          <th class="header" mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+        </ng-container>
 
-                <ng-container matColumnDef="Cantidad">
-                    <th class="header" mat-header-cell *matHeaderCellDef> Cantidad </th>
-                    <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
-                </ng-container>
+        <ng-container matColumnDef="Cantidad">
+          <th class="header" mat-header-cell *matHeaderCellDef> Cantidad </th>
+          <td mat-cell *matCellDef="let element"> {{element.cantidad}} </td>
+        </ng-container>
 
-                <ng-container matColumnDef="Peso_total">
-                    <th class="header" mat-header-cell *matHeaderCellDef> Peso_total </th>
-                    <td mat-cell *matCellDef="let element"> {{element.peso_total}} </td>
-                </ng-container>
+        <ng-container matColumnDef="Peso_total">
+          <th class="header" mat-header-cell *matHeaderCellDef> Peso_total </th>
+          <td mat-cell *matCellDef="let element"> {{element.peso_total}} </td>
+        </ng-container>
 
-                <ng-container matColumnDef="PrecioCop">
-                    <th class="header" mat-header-cell *matHeaderCellDef> PrecioCop </th>
-                    <td mat-cell *matCellDef="let element"> {{element.preciolistaCOP | currency:'COP':'symbol-narrow':'1.0-0'}} </td>
-                </ng-container>
-                PrecioRes
-                <ng-container matColumnDef="PrecioRes">
-                    <th class="header" mat-header-cell *matHeaderCellDef> PrecioRes </th>
-                    <td mat-cell *matCellDef="let element"> {{element.precioRescateCOP | currency:'COP':'symbol-narrow':'1.0-0'}} </td>
-                </ng-container>
+        <ng-container matColumnDef="PrecioCop">
+          <th class="header" mat-header-cell *matHeaderCellDef> PrecioCop </th>
+          <td mat-cell *matCellDef="let element"> {{element.preciolistaCOP | currency:'COP':'symbol-narrow':'1.0-0'}}
+          </td>
+        </ng-container>
+        PrecioRes
+        <ng-container matColumnDef="PrecioRes">
+          <th class="header" mat-header-cell *matHeaderCellDef> PrecioRes </th>
+          <td mat-cell *matCellDef="let element"> {{element.precioRescateCOP | currency:'COP':'symbol-narrow':'1.0-0'}}
+          </td>
+        </ng-container>
 
-                <ng-container matColumnDef="Preciototal">
-                    <th class="header" mat-header-cell *matHeaderCellDef> Preciototal </th>
-                    <td mat-cell *matCellDef="let element"> {{element.preciototal | currency:'COP':'symbol-narrow':'1.0-0'}} </td>
-                </ng-container>
+        <ng-container matColumnDef="Preciototal">
+          <th class="header" mat-header-cell *matHeaderCellDef> Preciototal </th>
+          <td mat-cell *matCellDef="let element"> {{element.preciototal | currency:'COP':'symbol-narrow':'1.0-0'}} </td>
+        </ng-container>
 
-                <ng-container matColumnDef="PrecioTotalRes">
-                    <th class="header" mat-header-cell *matHeaderCellDef> PrecioTotalRes </th>
-                    <td mat-cell *matCellDef="let element"> {{element.preciototalRescate | currency:'COP':'symbol-narrow':'1.0-0'}} </td>
-                </ng-container>
+        <ng-container matColumnDef="PrecioTotalRes">
+          <th class="header" mat-header-cell *matHeaderCellDef> PrecioTotalRes </th>
+          <td mat-cell *matCellDef="let element"> {{element.preciototalRescate |
+            currency:'COP':'symbol-narrow':'1.0-0'}} </td>
+        </ng-container>
 
-                <ng-container matColumnDef="Dto%">
-                    <th class="header" mat-header-cell *matHeaderCellDef>Dto%</th>
-                    <td mat-cell *matCellDef="let element"> {{element.descuentoPER | percent : '2.1-2'}} </td>
-                </ng-container>
-                <ng-container matColumnDef="Actions">
-                    <th class="header" mat-header-cell *matHeaderCellDef> Actions </th>
-                    <td mat-cell *matCellDef="let element">
-                        <a *ngIf="idRol != '3'" type="button" class="pointer" matTooltip="ver datos" style="color: #2649C3" data-bs-toggle="modal" data-bs-target="#exampleModal-1" data-bs-whatever="@mdo" (click)="viewData(
+        <ng-container matColumnDef="Dto%">
+          <th class="header" mat-header-cell *matHeaderCellDef>Dto%</th>
+          <td mat-cell *matCellDef="let element"> {{element.descuentoPER | percent : '2.1-2'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="Actions">
+          <th class="header" mat-header-cell *matHeaderCellDef> Actions </th>
+          <td mat-cell *matCellDef="let element">
+            <a *ngIf="idRol != '3'" type="button" class="pointer" matTooltip="ver datos" style="color: #2649C3"
+              data-bs-toggle="modal" data-bs-target="#exampleModal-1" data-bs-whatever="@mdo" (click)="viewData(
                                   element.peso_total,
                                   element.zona,
                                   element.flete,
@@ -153,9 +162,10 @@
                                   element.costo_unitario,
                                   element.costo_total
                                   )">
-                            <mat-icon>search</mat-icon>
-                        </a>
-                        <a type="button" class="pointer" style="color: #FFD433" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" (click)="editButton(
+              <mat-icon>search</mat-icon>
+            </a>
+            <a type="button" class="pointer" style="color: #FFD433" data-bs-toggle="modal"
+              data-bs-target="#exampleModal" data-bs-whatever="@mdo" (click)="editButton(
                               element.id_cotdetalle,
                               element.cantidad,
                               element.largoCM,
@@ -163,31 +173,32 @@
                               element.altoCM,
                               element.peso_kg
                               )">
-                            <mat-icon>edit</mat-icon>
-                        </a>
-                        <a type="button" class="pointer" style="color: #FF4233" (click)="deleteIdQuote(element.id_cotdetalle)">
-                            <mat-icon>delete</mat-icon>
-                        </a>
-                    </td>
-                </ng-container>
+              <mat-icon>edit</mat-icon>
+            </a>
+            <a type="button" class="pointer" style="color: #FF4233" (click)="deleteIdQuote(element.id_cotdetalle)">
+              <mat-icon>delete</mat-icon>
+            </a>
+          </td>
+        </ng-container>
 
 
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
-                <tr mat-row (click)="clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
-            </mat-paginator>
-        </mat-card>
-    </div>
+        <tr mat-row (click)="clickedRows.add(row)" [class.demo-row-is-clicked]="clickedRows.has(row)"
+          *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </mat-card>
+  </div>
 </div>
 <div class="col-12 mb-0 text-end">
-    <h3>Total COP: {{total | currency:'COP':'symbol-narrow':'1.0-0'}}</h3>
+  <h3>Total COP: {{total | currency:'COP':'symbol-narrow':'1.0-0'}}</h3>
 </div>
 <div *ngIf="statusForms" class="mt-2">
-    <button *ngIf="addButton" type="button" class="btn btn-warning m-1" (click)="closeQuote()">Terminar</button>
-    <button type="button" class="btn btn-primary m-1" (click)="newQuote()">Limpiar</button>
+  <button *ngIf="addButton" type="button" class="btn btn-warning m-1" (click)="closeQuote()">Terminar</button>
+  <button type="button" class="btn btn-primary m-1" (click)="newQuote()">Limpiar</button>
 </div>
 
 
@@ -197,88 +208,96 @@
 
 <!--MODAL DATOS KG-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Datos Requeridos</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form [formGroup]="formQuoteDet">
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Cantidad:</label>
-                        <input formControlName="cantidad" type="number" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Largo Cm :</label>
-                        <input formControlName="largoCM" type="number" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Ancho Cm:</label>
-                        <input formControlName="anchoCM" type="number" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Alto Cm:</label>
-                        <input formControlName="altoCM" type="number" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Peso Unitario kg:</label>
-                        <input formControlName="peso_kg" type="number" class="form-control" id="recipient-name">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button *ngIf="cotizarButton" type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createQuoteDet()">Cotizar</button>
-                <button *ngIf="!cotizarButton" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="updateQuoteDet()">Cotizar</button>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Datos Requeridos</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formQuoteDet">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Cantidad:</label>
+            <input formControlName="cantidad" type="number" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Largo Cm :</label>
+            <input formControlName="largoCM" type="number" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Ancho Cm:</label>
+            <input formControlName="anchoCM" type="number" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Alto Cm:</label>
+            <input formControlName="altoCM" type="number" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Peso Unitario kg:</label>
+            <input formControlName="peso_kg" type="number" class="form-control" id="recipient-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button *ngIf="cotizarButton" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+          (click)="createQuoteDet()">Cotizar</button>
+        <button *ngIf="!cotizarButton" type="button" class="btn btn-danger" data-bs-dismiss="modal"
+          (click)="updateQuoteDet()">Cotizar</button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!--MODAL QUOTEID-->
 
 <div class="modal fade" id="exampleModal-1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Costos Calculados</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">Peso Total: {{this.viewDta.peso_real}} kg</label>
-                    </div>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">Zona: {{this.viewDta.zona}}</label>
-                    </div>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">Flete: USD {{this.viewDta.flete | currency:'USD':'symbol-narrow':'1.0-0'}}</label>
-                    </div>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">Moneda: {{this.viewDta.moneda}}</label>
-                    </div>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">AjusteUSD: {{this.viewDta.ajuste200USD | currency:'USD':'symbol-narrow':'1.0-0'}}</label>
-                    </div>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">CostoLandedUSD: {{this.viewDta.costoLandedUSD | currency:'USD':'symbol-narrow':'1.0-0'}}</label>
-                    </div>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">Costo_unitario: USD {{this.viewDta.costo_unitario | currency:'USD':'symbol-narrow':'1.0-0'}}</label>
-                    </div>
-                    <div class="m-0">
-                        <label for="recipient-name" class="col-form-label">Costo_total: USD {{this.viewDta.costo_total | currency:'USD':'symbol-narrow':'1.0-0'}}</label>
-                    </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Costos Calculados</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">Peso Total: {{this.viewDta.peso_real}} kg</label>
+          </div>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">Zona: {{this.viewDta.zona}}</label>
+          </div>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">Flete: USD {{this.viewDta.flete |
+              currency:'USD':'symbol-narrow':'1.0-0'}}</label>
+          </div>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">Moneda: {{this.viewDta.moneda}}</label>
+          </div>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">AjusteUSD: {{this.viewDta.ajuste200USD |
+              currency:'USD':'symbol-narrow':'1.0-0'}}</label>
+          </div>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">CostoLandedUSD: {{this.viewDta.costoLandedUSD |
+              currency:'USD':'symbol-narrow':'1.0-0'}}</label>
+          </div>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">Costo_unitario: USD {{this.viewDta.costo_unitario |
+              currency:'USD':'symbol-narrow':'1.0-0'}}</label>
+          </div>
+          <div class="m-0">
+            <label for="recipient-name" class="col-form-label">Costo_total: USD {{this.viewDta.costo_total |
+              currency:'USD':'symbol-narrow':'1.0-0'}}</label>
+          </div>
 
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="createQuoteDet()">Cotizar</button>
-            </div>
-        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+          (click)="createQuoteDet()">Cotizar</button>
+      </div>
     </div>
+  </div>
 </div>

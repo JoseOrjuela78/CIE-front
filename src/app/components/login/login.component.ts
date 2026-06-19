@@ -46,19 +46,22 @@ export class LoginComponent implements OnInit {
         const body = {
           rol: data.user.ID_ROL,
           nombreUsuario: data.user.NOMBRE1 + ' ' + data.user.APELLIDO1,
-          token: data.token
-        };
-    
-        // si passworg vencido
-        if(true){
-          return this.openChangePass('123')
+          token: data.token,
+          menus: JSON.stringify(data.menus)
         };
 
         this.storageService.cargarSesion(body);
+        // data.changePass === 1 debe actualizar password
+        if (data.changePass === 1) {
+          Swal.close();
+          return this.openChangePass(data.user.ID_USUARIO);
+        };
+
         this.router.navigate(['/']);
         Swal.close();
       },
       error: (err) => {
+        console.log({err})
         Swal.fire({
           allowOutsideClick: true,
           icon: 'error',
@@ -69,11 +72,11 @@ export class LoginComponent implements OnInit {
     });
   };
 
-  openChangePass(identificacion:string) {
+  openChangePass(idusuario:number) {
     const modalref = this.modalService.open(ChangePassComponent,{ backdrop: 'static', // evita cerrar al hacer clic fuera
                                                                   keyboard: false     // desactiva cerrar con ESC
                                                                  });
-    modalref.componentInstance.identificacion = identificacion;//this.EditForm.value.identificacion;
+    modalref.componentInstance.id_usuario = idusuario;//this.EditForm.value.identificacion;
      // Capturar resultado al cerrar
     modalref.result.then(
       (result) => {

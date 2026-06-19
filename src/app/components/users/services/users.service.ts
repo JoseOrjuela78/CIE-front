@@ -28,6 +28,11 @@ export class UserService {
       .pipe(catchError((error) => throwError(() => error)));
   };
 
+  passwordUser(id_usuario: number, pass: string): Observable<any> {
+    return this.http.post<any>(URIS.usuarios.passwordUser, { id_usuario, pass })
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
   getUsers(filters: IUserFilters): Observable<any> {
     return this.http.put<any>(URIS.usuarios.getUsers, filters)
       .pipe(catchError((error) => throwError(() => error)));

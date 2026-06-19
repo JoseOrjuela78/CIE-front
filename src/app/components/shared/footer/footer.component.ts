@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
 })
 export class FooterComponent {
   today = new Date();
-  company = 'CIE DE COLMBIA SAS'
+  company = 'CIE DE COLOMBIA SAS'
   version = '6.0.0';
 
 }

@@ -12,6 +12,7 @@ usuarios: {
   login: enviroment.base + 'api/usuarios/login',
   updateUser: enviroment.base + 'api/usuarios',
   statusUser: enviroment.base + 'api/usuarios/status',
+  passwordUser: enviroment.base + 'api/usuarios/update-pass',
   getUsers: enviroment.base + 'api/usuarios/get-pag',
   getLista: enviroment.base + 'api/listas',
   getCiudades: enviroment.base + 'api/cities',

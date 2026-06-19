@@ -10,6 +10,7 @@ export class StorageService {
     sessionStorage.setItem(sessionData.rol, body.rol);
     sessionStorage.setItem(sessionData.nombreUsuario, body.nombreUsuario);
     sessionStorage.setItem(sessionData.token, body.token);
+    sessionStorage.setItem(sessionData.menus, body.menus);
     return true
   };
 

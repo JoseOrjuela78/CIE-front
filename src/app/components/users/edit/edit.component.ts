@@ -54,7 +54,8 @@ export class EditComponent implements OnInit{
       'ciudad': new FormControl(null, Validators.required),
       'telefono': new FormControl(null, Validators.required),
       'id_rol': new FormControl(null, Validators.required),
-      'pass': new FormControl(null, Validators.required)
+      'pass': new FormControl(null, Validators.required),
+      'id_usuario': new FormControl(null, Validators.required)
     });
     this.loadData();
    }
@@ -212,7 +213,8 @@ getUser() {
           ciudad: data.users.CIUDAD,
           telefono: data.users.TELEFONO,
           id_rol: data.users.ID_ROL,
-          pass: 'N/A'
+          pass: 'N/A',
+          id_usuario: data.users.ID_USUARIO
         });
 
         Swal.close();
@@ -237,7 +239,8 @@ getUser() {
           ciudad: null,
           telefono: null,
           id_rol: null,
-          pass: null
+          pass: null,
+          id_usuario:null
         });
 
         Swal.fire({
@@ -341,7 +344,7 @@ openChangePass() {
     const modalref = this.modalService.open(ChangePassComponent,{ backdrop: 'static', // evita cerrar al hacer clic fuera
                                                                   keyboard: false     // desactiva cerrar con ESC
                                                                  });
-    modalref.componentInstance.data = {identificacion: '123', login: false };//this.EditForm.value.identificacion;
+  modalref.componentInstance.id_usuario = this.EditForm.value.id_usuario;
      // Capturar resultado al cerrar
     modalref.result.then(
       (result) => {

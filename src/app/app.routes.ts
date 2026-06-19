@@ -28,27 +28,35 @@ export const routes: Routes = [
           import('./components/upload/upload.component').then(m => m.UploadComponent)
       },
       {
-        path: 'reports/med',
-        loadComponent: () =>
-                    import('./components/reports/med/med.component').then(m => m.MedComponent)
+        path: 'reports',
+        children: [
+          {
+            path: 'med',
+            loadComponent: () => import('./components/reports/med/med.component').then(m => m.MedComponent)
+          }
+        ]
       },
       {
-        path: 'edit',
-        loadComponent: () =>
-          import('./components/users/edit/edit.component').then(m => m.EditComponent)
-      },
-      {
-        path: 'permits',
-        loadComponent: () =>
-          import('./components/users/permits/permits.component').then(m => m.PermitsComponent)
-      },
-      {
-        path: 'roles',
-        loadComponent: () =>
-          import('./components/users/roles/roles.component').then(m => m.RolesComponent)
-      },
-
-    ]
+        path: 'users',
+        children: [
+          {
+            path: 'edit',
+            loadComponent: () =>
+              import('./components/users/edit/edit.component').then(m => m.EditComponent)
+          },
+          {
+            path: 'permits',
+            loadComponent: () =>
+              import('./components/users/permits/permits.component').then(m => m.PermitsComponent)
+          },
+          {
+            path: 'roles',
+            loadComponent: () =>
+              import('./components/users/roles/roles.component').then(m => m.RolesComponent)
+          }
+        ]
+      }
+      ]
   },
 
   // redirect root
