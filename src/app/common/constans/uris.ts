@@ -3,7 +3,8 @@ import { enviromentprod } from "../../enviroments/enviroment.prod";
 
 const production = false;
 const enviroment = {
-  base: production ? enviromentprod.base : enviromentdev.base
+  base: production ? enviromentprod.base : enviromentdev.base,
+  pagepdf: production ? enviromentprod.page : enviromentdev.page,
 };
 
 export const URIS = {
@@ -20,7 +21,10 @@ usuarios: {
   getMenus: enviroment.base + 'api/rol/schema',
   createPermitsRol: enviroment.base + 'api/create-permits-rol',
   createRol: enviroment.base + 'api/create-rol',
-  statusRol: enviroment.base + 'api/rol/status'
+  statusRol: enviroment.base + 'api/rol/status',
+  getUsersRestricted: enviroment.base + 'api/get-users-restricted',
+  deleteRestriction: enviroment.base + 'api/delete-restriction',
+  createRestriction: enviroment.base + 'api/create-restriction'
 },
 quotes:{
   createQuote: enviroment.base + 'api/quote',
@@ -59,6 +63,8 @@ tablas:{
   reports: {
     stock: enviroment.base + 'api/reports/stock',
     generateCsv: enviroment.base + 'api/reports/csv'
-  }
+  },
+
+  pagepdf: enviroment.pagepdf
 
 }

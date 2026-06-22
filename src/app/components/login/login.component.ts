@@ -47,7 +47,8 @@ export class LoginComponent implements OnInit {
           rol: data.user.ID_ROL,
           nombreUsuario: data.user.NOMBRE1 + ' ' + data.user.APELLIDO1,
           token: data.token,
-          menus: JSON.stringify(data.menus)
+          menus: JSON.stringify(data.menus),
+          restricciones: JSON.stringify(data.restricciones)
         };
 
         this.storageService.cargarSesion(body);

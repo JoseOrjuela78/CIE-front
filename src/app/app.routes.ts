@@ -33,7 +33,12 @@ export const routes: Routes = [
           {
             path: 'med',
             loadComponent: () => import('./components/reports/med/med.component').then(m => m.MedComponent)
+          },
+          {
+            path: 'quote',
+            loadComponent: () => import('./components/reports/ver-quote/ver-quote.component').then(m => m.VerQuoteComponent)
           }
+
         ]
       },
       {

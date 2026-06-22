@@ -1,0 +1,162 @@
+<div class="container m-5 p-5">
+  <div class="input-group">
+    <select [(ngModel)]="idSeller" class="form-select" id="inputGroupSelect04"
+      aria-label="Example select with button addon" (change)="idSellerSelected()">
+      <option selected value="0">Choose Seller...</option>
+      <option *ngFor="let e of idSellers" id="floatingSelect" [ngValue]="e.id_usuario">{{e.vendedor | uppercase}}
+      </option>
+
+      >
+    </select>
+  </div>
+  <div class="input-group">
+    <select [(ngModel)]="customer" class="form-select" id="inputGroupSelect04"
+      aria-label="Example select with button addon" (change)="customerSelected()">
+      <option selected value="">Choose Customer...</option>
+      <option *ngFor="let e of customers" id="floatingSelect" [ngValue]="e.CLIENTE">{{e.CLIENTE | uppercase}}</option>
+
+      >
+    </select>
+  </div>
+  <div class="input-group">
+    <select [(ngModel)]="idSelected" class="form-select" id="inputGroupSelect04"
+      aria-label="Example select with button addon" (change)="idQuoteSelected()">
+      <option selected value="0">Choose id cotizacion...</option>
+      <option *ngFor="let e of idQuotes" id="floatingSelect" [ngValue]="e.id_cotizacion">{{e.id_cotizacion}}</option>
+
+      >
+    </select>
+  </div>
+
+  <h1>Datos Cotización</h1>
+  <table class="table table-striped">
+
+    <thead>
+
+      <tr>
+        <th scope="col" *ngFor="let e of arrTitlesData">{{e | uppercase}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of quoteDta ;let indice =index;">
+        <th scope="row">{{i.id_cotizacion}}</th>
+        <th>{{i.fecha_init | date:'short'}}</th>
+        <th>{{i.fecha_update | date:'short'}}</th>
+        <th>{{i.cliente | uppercase}}</th>
+        <th>{{i.vendedor | uppercase}}</th>
+        <th>{{i.id_usuario}}</th>
+      </tr>
+    </tbody>
+  </table>
+  <h1>Detalle Cotización</h1>
+  <table class="table table-striped">
+
+    <thead>
+
+      <tr>
+        <th scope="col" *ngFor="let e of arrTitlesDataDetail">{{e | uppercase}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of quoteDetail ;let indice =index;">
+        <th scope="row">{{i.id_cotdetalle}}</th>
+        <th>{{i.fecha_init | date:'short'}}</th>
+        <th>{{i.fecha_update | date:'short'}}</th>
+        <th>{{i.id_cotizacion}}</th>
+        <th>{{i.id_detalle}}</th>
+        <th>{{i.part_number}}</th>
+        <th>{{i.proveedor}}</th>
+        <th>{{i.descripcion}}</th>
+        <th>{{i.cantidad}}</th>
+        <th>{{i.largoCM}}</th>
+        <th>{{i.anchoCM}}</th>
+        <th>{{i.altoCM}}</th>
+        <th>{{i.peso_kg}}</th>
+        <th>{{i.peso_total}}</th>
+        <th *ngIf="restriction === 21">{{i.costo_unitario | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th *ngIf="restriction === 21">{{i.costo_total | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th *ngIf="restriction === 21">{{i.zona}}</th>
+        <th *ngIf="restriction === 21">{{i.flete | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th *ngIf="restriction === 21">{{i.moneda}}</th>
+        <th *ngIf="restriction === 21">{{i.ajuste200USD | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th *ngIf="restriction === 21">{{i.costoLandedUSD | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.preciolistaCOP | currency:'COP':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.preciototal | currency:'COP':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.id_usuario}}</th>
+        <th>{{i.peso_real}}</th>
+      </tr>
+    </tbody>
+  </table>
+  <h1 *ngIf="restriction === 21">Totales Por Zona</h1>
+  <table *ngIf="restriction === 21" class="table table-striped">
+
+    <thead>
+
+      <tr>
+        <th scope="col" *ngFor="let e of arrTitlesTotalZona">{{e | uppercase}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of quoteTotalZona ;let indice =index;">
+        <th scope="row">{{i.id_cotTotales}}</th>
+        <th>{{i.id_cotizacion}}</th>
+        <th>{{i.proveedor}}</th>
+        <th>{{i.zona}}</th>
+        <th>{{i.cantidad}}</th>
+        <th>{{i.Tpeso_total}}</th>
+        <th>{{i.Tajuste200USD | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.Tpreciototal | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.Cflete | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.CcostoLandedUSD | currency:'USD':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.CpreciolistaCOP | currency:'COP':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.Cpreciototal | currency:'COP':'symbol-narrow':'1.0-0'}}</th>
+        <th>{{i.Cdescuento}}</th>
+      </tr>
+
+    </tbody>
+  </table>
+  <h1>Total Sin Descuento</h1>
+  <table class="table table-striped">
+
+    <thead>
+
+      <tr>
+        <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of quoteTotal ;let indice =index;">
+        <th scope="row">{{i.TOTAL| currency:'COP':'symbol-narrow':'1.0-0'}}</th>
+
+      </tr>
+
+    </tbody>
+  </table>
+  <h1>Descuento</h1>
+  <table class="table table-striped">
+
+    <thead>
+
+      <tr>
+        <th scope="col">Total Descuento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of quoteTotalDto ;let indice =index;">
+        <th scope="row">{{i.TOTAL_DTO| currency:'COP':'symbol-narrow':'1.0-0'}}</th>
+
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="row col-3 m-2">
+    <button *ngIf="botonPdf" type="button" class="btn btn-danger" (click)="redirectToExternalUrl(0)">Generate PDF
+      standar</button>
+  </div>
+  <div class="row col-3 m-2">
+    <button *ngIf="botonPdf" type="button" class="btn btn-danger" (click)="redirectToExternalUrl(1)">Generate PDF
+      rescue</button>
+  </div>
+
+
+</div>

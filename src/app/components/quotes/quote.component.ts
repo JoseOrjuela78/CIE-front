@@ -85,7 +85,7 @@ export class QuotesComponent implements OnInit {
       "descuentoCOP"
     ];
 
-
+    this.getbrands();
   };
 
   ngAfterViewInit() {
@@ -109,8 +109,8 @@ export class QuotesComponent implements OnInit {
 
     this.quotesService.getQuotes(idquote).subscribe({
       next: (res) => {
-        this.total = res.body.total;
-        const result: any = res.body.list;
+        this.total = res.total;
+        const result: any = res.list;
         const ELEMENTDATA = new Array();
 
         if (result.length <= 0) {
@@ -152,8 +152,8 @@ export class QuotesComponent implements OnInit {
 
     this.quotesService.getRefs(key).subscribe({
       next: (res) => {
-        if (res.body.list.length > 0) {
-          this.refsList = res.body.list;
+        if (res.list.length > 0) {
+          this.refsList = res.list;
           console.log('refsList', this.refsList);
         };
       },
@@ -182,8 +182,8 @@ export class QuotesComponent implements OnInit {
 
       next: (res) => {
         this.statusForms = false;
-        if (res.body.id_quote > 0) {
-          this.id_quote = Number(res.body.id_quote);
+        if (res.id_quote > 0) {
+          this.id_quote = Number(res.id_quote);
           this.statusForms = true;
         };
       },
@@ -228,13 +228,13 @@ export class QuotesComponent implements OnInit {
     this.quotesService.cpeso(this.formQuoteDet.value).subscribe({
 
       next: (res) => {
-        if (res.body.code == 201) {
+        if (res.code == 201) {
 
           Swal.fire({
             allowOutsideClick: true,
             icon: 'error',
             title: 'Error',
-            text: res.body.message
+            text: res.message
           });
           return
         };
@@ -243,7 +243,7 @@ export class QuotesComponent implements OnInit {
           next: (res) => {
             const bd = {
               "id_detalle": idDetalle,
-              "id_cotdetalle": res.body.id_quote_detail
+              "id_cotdetalle": res.id_quote_detail
             };
 
             this.quotesService.generateQuote(bd).subscribe({
@@ -295,12 +295,12 @@ export class QuotesComponent implements OnInit {
 
     this.quotesService.cpeso(this.formQuoteDet.value).subscribe({
       next: (res) => {
-        if (res.body.code == 201) {
+        if (res.code == 201) {
           Swal.fire({
             allowOutsideClick: true,
             icon: 'error',
             title: 'Error',
-            text: res.body.message
+            text: res.message
           });
           return
         };
@@ -308,7 +308,7 @@ export class QuotesComponent implements OnInit {
         this.quotesService.updateQuoteDet(this.formQuoteDet.value).subscribe({
           next: (res) => {
             this.cotizarButton = false;
-            const bd = JSON.parse(res.body.data);
+            const bd = JSON.parse(res.data);
             this.quotesService.generateQuote(bd).subscribe({
               next: (res) => {
                 this.listar(this.id_quote);
@@ -355,9 +355,9 @@ export class QuotesComponent implements OnInit {
 
     this.quotesService.closeQuote(this.id_quote).subscribe({
       next: (res) => {
-        this.total = res.body.total;
+        this.total = res.total;
         this.addButton = false;
-        const arr = JSON.parse(res.body.rows);
+        const arr = JSON.parse(res.rows);
         this.getTotalDto(this.id_quote);
       },
       error: (err) => {
@@ -459,7 +459,7 @@ export class QuotesComponent implements OnInit {
     this.quoteTotList = [];
     this.quotesService.gettotal(idQuote).subscribe({
       next: (res) => {
-        this.quoteTotList = res.body.totalDto;
+        this.quoteTotList = res.totalDto;
         this.listar(this.id_quote);
       },
       error: (err) => {
@@ -478,7 +478,7 @@ export class QuotesComponent implements OnInit {
     this.quotesService.getBrands().subscribe({
       next: (res) => {
         this.brandsList = [];
-        this.brandsList = res.body.list;
+        this.brandsList = res.list;
       },
       error: (err) => {
         Swal.fire({

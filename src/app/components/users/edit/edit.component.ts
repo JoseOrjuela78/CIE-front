@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangePassComponent } from './modal/changepass/changepass.component';
 import { CommonModule } from '@angular/common';
@@ -33,6 +33,7 @@ export class EditComponent implements OnInit{
 
   private modalService = inject(NgbModal);
   private userService = inject(UserService);
+  private cd = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.createButton = false;
@@ -44,7 +45,7 @@ export class EditComponent implements OnInit{
       'tipo_persona': new FormControl(null, Validators.required),
       'tipo_identificacion': new FormControl(null, Validators.required),
       'identificacion': new FormControl(null, Validators.required),
-      'razon_social': new FormControl(null, Validators.required),
+      'razon_social': new FormControl('NA', Validators.required),
       'nombre1': new FormControl(null, Validators.required),
       'nombre2': new FormControl(null, Validators.required),
       'apellido1': new FormControl(null, Validators.required),
@@ -93,6 +94,7 @@ loadData(){
         this.tiposGenero = res.tiposGenero.lista;
         this.ciudades = res.ciudades.lista;
         this.roles = res.roles.lista;
+        this.cd.detectChanges();
         Swal.close();
 
     },

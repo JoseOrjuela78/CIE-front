@@ -5,6 +5,7 @@ import { URIS } from '../../../common/constans/uris';
 import { IUser } from '../../../common/constans/models/IUser';
 import { IUserFilters } from '../../../common/constans/models/IUserFilters';
 import { IRolesFilters } from '../../../common/constans/models/IRolesFilters';
+import { IUserFiltersRestricted } from '../../../common/constans/models/IUserFiltersRestricted';
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +78,21 @@ export class UserService {
 
   statusRol(id_rol: string, estado: number): Observable<any> {
     return this.http.put<any>(URIS.usuarios.statusRol, { id_rol, estado })
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  getUsersRestricted(filters: IUserFiltersRestricted): Observable<any> {
+    return this.http.put<any>(URIS.usuarios.getUsersRestricted, filters)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  deleteRestriction(id_usuario: number,codigo: number): Observable<any> {
+    return this.http.put<any>(URIS.usuarios.deleteRestriction, { id_usuario, codigo })
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  createRestriction(id_usuario: number, codigo: number): Observable<any> {
+    return this.http.post<any>(URIS.usuarios.createRestriction, { id_usuario, codigo })
       .pipe(catchError((error) => throwError(() => error)));
   };
 };

@@ -4,33 +4,36 @@
             <h1 class="card-title">Restricciones</h1>
               <hr>
               <div class="row">
-                <div class="col-6">
-                    <select class="form-select form-select-lg mb-3" aria-label="Large select example">
-                        <option selected disabled>Seleccione Restriccion</option>
-                        <option *ngFor="let res of restricciones" [value]="res.codigo">{{res.valor}}</option>
-                    </select>
-                </div>
+
                 <div class="col-6 mt-1">
-                    <button type="button" class="btn btn-primary" (click)="openAddUser(1)">Agregar Usuario</button>
+
                 </div>
               </div>
               <hr class="m-1">
       <form [formGroup]="searchForm" (ngSubmit)="firstPage()">
         <div class="row">
-            <div class="col-3">
+           <div class="col-5">
+                <label for="codigo" class="form-label">Restriccion :</label>
+               <select formControlName="codigo" (change)="onSelectChange($event)" class="form-select form-select-lg mb-3" aria-label="Large select example">
+                  <option selected disabled>Seleccione Restriccion</option>
+                   <option *ngFor="let res of restricciones" [value]="res.CODIGO">{{res.VALOR}}</option>
+               </select>
+           </div>
+           <div class="col-3">
               <div class="mb-3">
                 <label for="titulo" class="form-label">Identificacion :</label>
                 <input formControlName="identificacion" type="text" class="form-control" id="Titulo" aria-describedby="titulo">
               </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
               <div class="mb-3">
                 <label for="descripcion" class="form-label">Nombre</label>
                 <input formControlName="nombre" type="text" class="form-control" id="descripcion" aria-describedby="descripcion">
               </div>
             </div>
-   
         </div>
+        <button type="submit" class="btn btn-primary m-1">Buscar</button>
+        <button type="button" class="btn btn-warning" (click)="openAddUser()">+ Usuario</button>
       </form>
       <hr>
       <!--Table init-->
@@ -46,13 +49,16 @@
                             (click)="columnFunction('Nombre')"
                             >{{datatable.headerRows['Nombre']}}
                             </button></th>
-          </tr> 
+            <th class="bg-primary text-white" scope="col"><button class="btn btn-primary"
+                  (click)="columnFunction('Nombre')">{{datatable.headerRows['Opciones']}}
+                </button></th>
+          </tr>
         </thead>
         <tbody>
           <tr *ngFor="let row of datatable.dataRows" class="font11">
-            <td>{{row.identificacion}}</td>
-            <td>{{row.nombre}}</td>
-           <td><button  class="btn btn-danger">Eliminar</button></td>
+            <td>{{row.IDENTIFICACION}}</td>
+            <td>{{row.NOMBRE1}} {{row.APELLIDO2}}</td>
+           <td><button  class="btn btn-danger" (click)="EliminarUsuario(row.ID_USUARIO)">Eliminar</button></td>
           </tr>
          </tbody>
       </table>
@@ -123,9 +129,6 @@
           </button>
           </li>
         </ul>
-        </div>
-        <div class="col-4 text-end">
-          <button type="button" (click)="exportReport()" class="btn btn-outline-primary">Exportar</button>
         </div>
         </div>
       </nav>

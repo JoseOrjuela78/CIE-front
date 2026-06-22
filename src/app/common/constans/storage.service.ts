@@ -11,6 +11,8 @@ export class StorageService {
     sessionStorage.setItem(sessionData.nombreUsuario, body.nombreUsuario);
     sessionStorage.setItem(sessionData.token, body.token);
     sessionStorage.setItem(sessionData.menus, body.menus);
+    sessionStorage.setItem(sessionData.restricciones, body.restricciones);
+
     return true
   };
 

@@ -16,7 +16,7 @@ import { EditComponent } from '../users/edit/edit.component';
   imports:[CommonModule, ReactiveFormsModule, FormsModule]
 })
 export class UploadComponent implements OnInit{
- 
+
    UserForm!: FormGroup;
    arrTitles:any = [];
    arrRows:any = [];
@@ -44,7 +44,7 @@ export class UploadComponent implements OnInit{
       'id_rol': new FormControl(null, Validators.required),
       'pass': new FormControl(null, Validators.required)
     });
-    this.arrTables = [ "DescuentosVolumen","Listadetalle","Monedas","Parametros","Proveedores","RangosUSD","Tarifas","Trm","Usuarios","Zonas"];
+    this.arrTables = [ "DescuentosVolumen","Listadetalle","Monedas","Parametros","Proveedores","RangosUSD","Tarifas","Trm","Zonas"];
       //this.loadData("Tables_est");
   };
 
@@ -53,19 +53,20 @@ export class UploadComponent implements OnInit{
             allowOutsideClick: false,
             icon: 'info',
             text: `Cargando tabla : ${table}`
-  
+
           });
       Swal.showLoading();
 
       this.arrTitles= [];
       this.arrRows = [];
-  
+
       forkJoin({
         tableEst: this.uploadService.getTable(table)
-        
+
       }).subscribe({
         next: (res) => {
-          this.arrTitles = Object.keys(JSON.parse(res.tableEst.body.data)[0]);
+          console.log({ res });
+          this.arrTitles = Object.keys(JSON.parse(res.tableEst.data)[0]);
 
           if (table == "Usuarios") {
             let index = 1;
@@ -75,12 +76,12 @@ export class UploadComponent implements OnInit{
             this.arrTitles.push('Acciones');
             };
 
-          this.arrRows = JSON.parse(res.tableEst.body.data);
+          this.arrRows = JSON.parse(res.tableEst.data);
           Swal.fire({
                       allowOutsideClick: true,
                       icon: 'info',
                       title: 'Info',
-                      text: res.tableEst.body.message
+                      text: res.tableEst.message
                     });
        },
        error: (err) => {
@@ -102,7 +103,7 @@ export class UploadComponent implements OnInit{
                 text: `Cargando tabla : ${this.tableSelected}`
                });
       Swal.showLoading();
-     
+
       this.uploadService.putTable(this.tableSelected).subscribe({
         next: (res) => {
 
@@ -117,9 +118,9 @@ export class UploadComponent implements OnInit{
                   };
 
                   if (this.tableSelected != "Usuarios")this.tableSelected = "Tables_est";
-                  
+
                   this.loadData(this.tableSelected);
-                
+
        },
        error: (err) => {
           Swal.fire({
@@ -143,7 +144,7 @@ getUsuario(user:IUser){
 };
 
 createUsuario() {
-      
+
       Swal.fire({
         allowOutsideClick: false,
         icon: 'info',
@@ -163,7 +164,7 @@ createUsuario() {
                                                     });
                                           return;
                                           };
-                 
+
                     this.loadData("Usuarios");
 
          },
@@ -216,7 +217,7 @@ updateUsuario() {
 
   openUserForm() {
     const modalref = this.modalService.open(EditComponent,{ size: 'lg' });
-   //const user: IUser ={      
+   //const user: IUser ={
     //}
     //modalref.componentInstance.userInput = user;
   };
