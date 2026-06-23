@@ -37,6 +37,10 @@ export const routes: Routes = [
           {
             path: 'quote',
             loadComponent: () => import('./components/reports/ver-quote/ver-quote.component').then(m => m.VerQuoteComponent)
+          },
+          {
+            path: 'stock',
+            loadComponent: () => import('./components/reports/stock/stock.component').then(m => m.StockComponent)
           }
 
         ]

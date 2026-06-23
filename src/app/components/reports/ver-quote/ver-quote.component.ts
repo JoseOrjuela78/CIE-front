@@ -1,6 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-//import { AuthService } from 'src/app/services/auth.service';
-//import { QuotesService } from 'src/app/services/quotes.service';
 import { ReportsService } from '../services/reports.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
