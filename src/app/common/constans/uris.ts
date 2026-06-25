@@ -1,7 +1,7 @@
 import { enviromentdev } from '../../enviroments/enviroment.dev';
 import { enviromentprod } from "../../enviroments/enviroment.prod";
 
-const production = false;
+const production = true;
 const enviroment = {
   base: production ? enviromentprod.base : enviromentdev.base,
   pagepdf: production ? enviromentprod.page : enviromentdev.page,
@@ -62,7 +62,9 @@ tablas:{
   ,
   reports: {
     stock: enviroment.base + 'api/reports/stock',
-    generateCsv: enviroment.base + 'api/reports/csv'
+    stockCIE: enviroment.base + 'api/reports/stock-cie',
+    generateCsv: enviroment.base + 'api/reports/csv',
+    getBodegas: enviroment.base + 'api/reports/get-bod'
   },
 
   pagepdf: enviroment.pagepdf

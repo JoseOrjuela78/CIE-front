@@ -15,6 +15,11 @@ export class ReportsService {
             .pipe(catchError((error) => throwError(() => error)));
   };
 
+  putReportStockCIE(body: any): Observable<any> {
+    return this.http.put<any>(URIS.reports.stockCIE, body)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
   putGenerateCsv(body: any): Observable<any>{
         return this.http.put(URIS.reports.generateCsv, body)
             .pipe(catchError((error) => throwError(() => error)));
@@ -42,6 +47,11 @@ export class ReportsService {
 
   getRescue(status: number): Observable<any>{
     return this.http.get<any>(URIS.quotes.rescue + '/' + status)
+      .pipe(catchError((error) => throwError(() => error)));
+  };
+
+  getBodegas(bod: string): Observable<any> {
+    return this.http.get<any>(URIS.reports.getBodegas + '/' + bod)
       .pipe(catchError((error) => throwError(() => error)));
   };
 

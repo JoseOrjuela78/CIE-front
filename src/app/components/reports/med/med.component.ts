@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { DataTable } from '../../../common/constans/models/IDataTable'; 
+import { DataTable } from '../../../common/constans/models/IDataTable';
 import { UtilitiesService } from '../../../common/utilities.service';
 import { ReportsService } from '../services/reports.service';
 
@@ -29,9 +29,11 @@ export class MedComponent implements  OnInit {
   lastPageFlag: boolean = false;
   showForm: boolean = false;
   searchForm!: FormGroup;
-  
+  bodegas: Array<any> = [];
+
   private utils = inject(UtilitiesService);
   private reportsService = inject(ReportsService);
+  private cd = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
         this.searchForm = new FormGroup({
@@ -49,7 +51,7 @@ export class MedComponent implements  OnInit {
       'fechaSF': new FormControl(null),
       'operacion': new FormControl(null)
     });
- 
+
   this.datatable = {
       headerRows: {
                     Fecha_Reporte: "Reporte de:",
@@ -69,6 +71,7 @@ export class MedComponent implements  OnInit {
       previous: false,
       next: false
     };
+    this.getBodegas();
   };
 
   generarReporte() {
@@ -76,6 +79,24 @@ export class MedComponent implements  OnInit {
     this.onSubmit();
     this.showForm = true;
   };
+
+  getBodegas() {
+    this.reportsService.getBodegas('med').subscribe({
+      next: (res) => {
+        this.bodegas = res.bodegas;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        Swal.fire({
+          allowOutsideClick: true,
+          icon: 'error',
+          title: err.error.msg,
+          text: `Error cargardo bodegas`
+        });
+      }
+
+    })
+  }
 
   onSubmit() {
    Swal.fire({
@@ -91,11 +112,11 @@ export class MedComponent implements  OnInit {
 
    this.reportsService.putReportStock(this.searchForm.value).subscribe({
      next: (res) => {
-        this.datatable.dataRows = res.body.datos; 
+        this.datatable.dataRows = res.body.datos;
         this.totalRegistros = res.body.TotalRegistros;
         this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pageSize, this.totalRegistros);
         this.verifyPaginationControls();
-        
+
         const {currentPage, showPages, setPages} = this.utils.limitPagination(this.paginas,this.paginaActual,this.nextFunction,this.lastPageFlag);
 
         this.showPages = showPages;
