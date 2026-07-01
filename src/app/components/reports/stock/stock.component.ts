@@ -82,10 +82,11 @@ export class StockComponent implements OnInit {
   };
 
   getBodegas() {
-      this.reportsService.getBodegas('all').subscribe({
+    //this.bodegas = [{ "COD": "B1", "NOM": "BOGOTA PRINCIPAL" }, { "COD": "B2", "NOM": "BOGOTA OIKOS" }, { "COD": "M1", "NOM": "MEDELLIN" }, { "COD": "M2", "NOM": "MEDELLIN OIKOS" }, { "COD": "B3", "NOM": "BOGOTA REPUESTOS" }, { "COD": "B4", "NOM": "COMERCIAL" }, { "COD": "B5", "NOM": "PTE X FACTURAR" }, { "COD": "S1", "NOM": "STAYER" }, { "COD": "S2", "NOM": "CONSIGNACION" }, { "COD": "B6", "NOM": "DEMOSTRACIONES" }, { "COD": "B7", "NOM": "OBSOLETOS" }, { "COD": "B8", "NOM": "MANTENIMIENTO" }];
+    this.reportsService.getBodegas('all').subscribe({
         next: (res) => {
-          this.bodegas = res.bodegas;
-          this.cd.detectChanges();
+        this.bodegas = res.bodegas;
+        this.cd.detectChanges();
         },
         error: (err) => {
           Swal.fire({
@@ -97,6 +98,7 @@ export class StockComponent implements OnInit {
         }
 
       })
+
     }
 
     onSubmit() {
@@ -113,8 +115,8 @@ export class StockComponent implements OnInit {
 
        this.reportsService.putReportStockCIE(this.searchForm.value).subscribe({
          next: (res) => {
-            this.datatable.dataRows = res.body.datos;
-            this.totalRegistros = res.body.TotalRegistros;
+            this.datatable.dataRows = res.datos;
+            this.totalRegistros = res.TotalRegistros;
             this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pageSize, this.totalRegistros);
             this.verifyPaginationControls();
 
@@ -218,10 +220,10 @@ export class StockComponent implements OnInit {
         console.log({ valuesExport: this.searchForm.value });
         this.reportsService.putReportStockCIE(this.searchForm.value).subscribe({
          next: (res) => {
-          const json = res.body.datos;
+          const json = res.datos;
           this.reportsService.putGenerateCsv(json).subscribe({
             next: (res) => {
-                const csv = res.body.datos
+                const csv = res.datos
                 const blob = new Blob([csv], { type: 'text/csv' });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');

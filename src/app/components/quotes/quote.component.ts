@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -53,6 +53,7 @@ export class QuotesComponent implements OnInit {
 
   private utils = inject(UtilitiesService);
   private quotesService = inject(QuotesService);
+  private cd = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.formBrands = new FormGroup({
@@ -131,6 +132,7 @@ export class QuotesComponent implements OnInit {
           ELEMENTDATA.push(element);
         });
         this.dataSource.data = ELEMENTDATA;
+        this.cd.detectChanges();
         Swal.close();
       },
       error: (err) => {
@@ -154,7 +156,7 @@ export class QuotesComponent implements OnInit {
       next: (res) => {
         if (res.list.length > 0) {
           this.refsList = res.list;
-          console.log('refsList', this.refsList);
+          this.cd.detectChanges();
         };
       },
       error: (err) => {
@@ -479,6 +481,7 @@ export class QuotesComponent implements OnInit {
       next: (res) => {
         this.brandsList = [];
         this.brandsList = res.list;
+        this.cd.detectChanges();
       },
       error: (err) => {
         Swal.fire({

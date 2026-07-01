@@ -81,6 +81,8 @@ export class MedComponent implements  OnInit {
   };
 
   getBodegas() {
+    //this.bodegas = [{ "COD": "M1", "NOM": "MEDELLIN" }, { "COD": "M2", "NOM": "MEDELLIN OIKOS" }];
+
     this.reportsService.getBodegas('med').subscribe({
       next: (res) => {
         this.bodegas = res.bodegas;
@@ -96,6 +98,7 @@ export class MedComponent implements  OnInit {
       }
 
     })
+
   }
 
   onSubmit() {
@@ -112,8 +115,8 @@ export class MedComponent implements  OnInit {
 
    this.reportsService.putReportStock(this.searchForm.value).subscribe({
      next: (res) => {
-        this.datatable.dataRows = res.body.datos;
-        this.totalRegistros = res.body.TotalRegistros;
+        this.datatable.dataRows = res.datos;
+        this.totalRegistros = res.TotalRegistros;
         this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pageSize, this.totalRegistros);
         this.verifyPaginationControls();
 
@@ -218,10 +221,10 @@ export class MedComponent implements  OnInit {
     console.log({ valuesExport: this.searchForm.value });
     this.reportsService.putReportStock(this.searchForm.value).subscribe({
      next: (res) => {
-      const json = res.body.datos;
+      const json = res.datos;
       this.reportsService.putGenerateCsv(json).subscribe({
         next: (res) => {
-            const csv = res.body.datos
+            const csv = res.datos
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');

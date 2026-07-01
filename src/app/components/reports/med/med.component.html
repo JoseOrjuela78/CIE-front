@@ -11,7 +11,7 @@
               <label for="Bodega" class="form-label">Bodega</label>
               <select formControlName="almacen" class="form-select mb-3" aria-label="Large select example">
                 <option selected value="">Todos</option>
-                <option *ngFor="let bod of bodegas" [ngValue]="bod['COD']">{{bod['NOM']}}</option>
+                <option *ngFor="let bod of bodegas" [ngValue]="bod.COD">{{bod.NOM}}</option>
 
               </select>
             </div>
