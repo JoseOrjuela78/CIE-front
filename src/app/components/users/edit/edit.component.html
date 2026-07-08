@@ -20,6 +20,7 @@
                         formControlName="tipo_persona"
                         id="tipoPersona"
                         class="form-select"
+                        (click)="getTiposPersona()"
                         >
                         <option *ngFor="let tipo of tiposPersona" [ngValue]="tipo['CODIGO']">{{tipo['VALOR']}}</option>
 
@@ -32,7 +33,9 @@
                         <select
                         formControlName="tipo_identificacion"
                         id="tipo_identificacion"
-                        class="form-select">
+                        class="form-select"
+                        (click)="getTiposDocumento()"
+                        >
                           <option *ngFor="let tipo of tiposDocumento" [ngValue]="tipo['CODIGO']">{{tipo['PARAMETROS']}}</option>
                         </select>
                     </div>
@@ -91,7 +94,12 @@
                 <div class="col-3">
                     <div class="mb-3">
                         <label for="genero" class="form-label">Genero :</label>
-                            <select formControlName="genero" id="genero" class="form-select">
+                            <select
+                            formControlName="genero"
+                            id="genero"
+                            class="form-select"
+                            (click)="getTiposGenero()"
+                            >
                                 <option *ngFor="let tipo of tiposGenero" [ngValue]="tipo['CODIGO']">{{tipo['PARAMETROS']}}</option>
                             </select>
                     </div>
@@ -102,7 +110,8 @@
                         <input
                         formControlName="telefono"
                         type="text"
-                        class="form-control" id="telefono">
+                        class="form-control" id="telefono"
+                        >
                     </div>
                 </div>
                  <div class="col-3">
@@ -117,7 +126,12 @@
                  <div class="col-3">
                     <div class="mb-3">
                         <label for="ciudad" class="form-label">Ciudad :</label>
-                        <select formControlName="ciudad" id="ciudad" class="form-select">
+                        <select
+                        formControlName="ciudad"
+                        id="ciudad"
+                        class="form-select"
+                        (click)="getCiudades()"
+                        >
                           <option *ngFor="let ciudad of ciudades" [ngValue]="ciudad['CODIGO']">{{ciudad['DANE']}}-{{ciudad['CIUDAD']}}</option>
                         </select>
                     </div>
@@ -127,7 +141,12 @@
                 <div class="col-3">
                   <div class="mb-3">
                     <label for="id_rol" class="form-label">Rol :</label>
-                    <select formControlName="id_rol" id="id_rol" class="form-select">
+                    <select
+                    formControlName="id_rol"
+                    id="id_rol"
+                    class="form-select"
+                    (click)="getRoles()"
+                    >
                       <option *ngFor="let rol of roles" [ngValue]="rol['ID_ROL']">{{rol['NOMBRE_ROL']}}</option>
                     </select>
                   </div>

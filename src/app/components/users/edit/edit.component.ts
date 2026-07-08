@@ -21,11 +21,11 @@ export class EditComponent implements OnInit{
 
   @Input() userInput!:IUser;
   EditForm!: FormGroup;
-  tiposPersona: any;
-  tiposDocumento: any;
-  tiposGenero: any;
-  ciudades: any;
-  roles: any;
+  tiposPersona = [];
+  tiposDocumento = [];
+  tiposGenero = [];
+  ciudades = [];
+  roles = [];
   createButton!: boolean;
   passInput!: boolean;
   statusUser!: EstadoUsuario; // Pendiente, Activo, Inactivo
@@ -58,20 +58,25 @@ export class EditComponent implements OnInit{
       'pass': new FormControl(null, Validators.required),
       'id_usuario': new FormControl(null, Validators.required)
     });
-    this.getTiposPersona();
-    this.getTiposDocumento();
-    this.getTiposGenero();
-    this.getCiudades();
-    this.getRoles();
-
   }
 
   getTiposPersona() {
 
+    if (this.tiposPersona.length > 0) return;
+
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Creado usuario...'
+
+    });
+    Swal.showLoading();
+    this.tiposPersona = [];
     this.userService.getLista(1).subscribe({
       next: (res) => {
         this.tiposPersona = res.lista;
         this.cd.detectChanges();
+        Swal.close();
       },
       error: (err) => {
         Swal.fire({
@@ -86,11 +91,21 @@ export class EditComponent implements OnInit{
   };
 
   getTiposDocumento() {
+    if (this.tiposDocumento.length > 0) return;
 
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Creado usuario...'
+
+    });
+    Swal.showLoading();
+    this.tiposDocumento = [];
     this.userService.getLista(2).subscribe({
       next: (res) => {
         this.tiposDocumento = res.lista;
         this.cd.detectChanges();
+        Swal.close();
       },
       error: (err) => {
         Swal.fire({
@@ -105,11 +120,22 @@ export class EditComponent implements OnInit{
   };
 
   getTiposGenero() {
+    if (this.tiposGenero.length > 0) return;
+
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Creado usuario...'
+
+    });
+    Swal.showLoading();
+    this.tiposGenero = [];
 
     this.userService.getLista(3).subscribe({
       next: (res) => {
         this.tiposGenero = res.lista;
         this.cd.detectChanges();
+        Swal.close();
       },
       error: (err) => {
         Swal.fire({
@@ -124,11 +150,22 @@ export class EditComponent implements OnInit{
   };
 
   getCiudades() {
+    if (this.ciudades.length > 0) return;
+
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Creado usuario...'
+
+    });
+    Swal.showLoading();
+    this.ciudades = [];
 
     this.userService.getCiudades('CO').subscribe({
       next: (res) => {
         this.ciudades = res.lista;
         this.cd.detectChanges();
+        Swal.close();
       },
       error: (err) => {
         Swal.fire({
@@ -143,6 +180,16 @@ export class EditComponent implements OnInit{
   };
 
   getRoles() {
+    if (this.roles.length > 0) return;
+
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Creado usuario...'
+
+    });
+    Swal.showLoading();
+    this.roles = [];
 
     this.userService.getRoles({
       ordercolumn: null,
@@ -159,6 +206,7 @@ export class EditComponent implements OnInit{
       next: (res) => {
         this.roles = res.lista;
         this.cd.detectChanges();
+        Swal.close();
       },
       error: (err) => {
         Swal.fire({
