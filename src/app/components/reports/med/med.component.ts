@@ -221,40 +221,28 @@ export class MedComponent implements  OnInit {
     this.reportsService.putReportStock(this.searchForm.value).subscribe({
      next: (res) => {
       const json = res.datos;
-      this.reportsService.putGenerateCsv(json).subscribe({
-        next: (res) => {
-            const csv = res.datos
-            const blob = new Blob([csv], { type: 'text/csv' });
+        this.reportsService.putGenerateCsv(json).subscribe({
+          next: (blob: Blob) => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
+
             const fecha = new Date();
-            const anio = fecha.getFullYear();
-            const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-            const dia = String(fecha.getDate()).padStart(2, '0');
-            const hora = String(fecha.getHours()).padStart(2, '0');
-            const minutos = String(fecha.getMinutes()).padStart(2, '0');
-            const segundos = String(fecha.getSeconds()).padStart(2, '0');
+            const codigo = fecha.toISOString().replace(/[-:.TZ]/g, '');
+            a.download = `${codigo}.txt`; // ahora sí extensión CSV
 
-            // Código: AAAAMMDDHHMMSS
-            const codigo = `${anio}${mes}${dia}${hora}${minutos}${segundos}`;
-
-            a.download = `${codigo}.txt`;
             a.click();
-
             window.URL.revokeObjectURL(url);
-            this.showForm = false;
             Swal.close();
-        },
-        error: (err) => {
-               Swal.fire({
-                 allowOutsideClick: true,
-                 icon: 'error',
-                 title: err.error.msg,
-                 text: `Error generando cvs`
-               });
-        }
-       });
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo generar el CSV'
+            });
+          }
+        });
      },
      error: (err) => {
                Swal.fire({

@@ -20,9 +20,9 @@ export class ReportsService {
       .pipe(catchError((error) => throwError(() => error)));
   };
 
-  putGenerateCsv(body: any): Observable<any>{
-        return this.http.put(URIS.reports.generateCsv, body)
-            .pipe(catchError((error) => throwError(() => error)));
+  putGenerateCsv(body: any): Observable<Blob> {
+    return this.http.put(URIS.reports.generateCsv, body, { responseType: 'blob' })
+      .pipe(catchError((error) => throwError(() => error)));
   };
 
   getQuoteDetail(idQuote: number): Observable<any> {
