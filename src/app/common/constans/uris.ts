@@ -1,7 +1,7 @@
 import { enviromentdev } from '../../enviroments/enviroment.dev';
 import { enviromentprod } from "../../enviroments/enviroment.prod";
 
-const production = true;
+const production = false;
 const enviroment = {
   base: production ? enviromentprod.base : enviromentdev.base,
   pagepdf: production ? enviromentprod.page : enviromentdev.page,

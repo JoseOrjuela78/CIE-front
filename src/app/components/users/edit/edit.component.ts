@@ -6,7 +6,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import Swal from 'sweetalert2';
 import { UserService } from '../services/users.service';
 import { IUser } from '../../../common/constans/models/IUser';
-import { catchError, forkJoin, of } from 'rxjs';
+import { catchError, finalize, forkJoin, map, of } from 'rxjs';
 import { IUserFilters } from '../../../common/constans/models/IUserFilters';
 import { EstadoUsuario, EstadoButton } from '../../../common/constans/enums/status.user';
 
@@ -58,59 +58,93 @@ export class EditComponent implements OnInit{
       'pass': new FormControl(null, Validators.required),
       'id_usuario': new FormControl(null, Validators.required)
     });
-    this.loadData();
+    this.getTiposPersona();
+    this.getTiposDocumento();
+    this.getTiposGenero();
+    this.getCiudades();
+    this.getRoles();
+
   }
 
-loadData() {
-  Swal.fire({
-    allowOutsideClick: false,
-    icon: 'info',
-    text: 'Cargando listas...'
-  });
-  Swal.showLoading();
+  getTiposPersona() {
 
-  forkJoin({
-    tiposPersona: this.userService.getLista(1).pipe(
-      catchError(err => {
+    this.userService.getLista(1).subscribe({
+      next: (res) => {
+        this.tiposPersona = res.lista;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
         Swal.fire({
+          allowOutsideClick: true,
           icon: 'error',
-          title: 'Error en tiposPersona',
-          text: err.error?.msg || 'No se pudo cargar la lista de tipos de persona'
+          title: err.error.msg,
+          text: `error getTiposPersona`
         });
-        return of({ lista: [] });
-      })
-    ),
-    tiposDocumento: this.userService.getLista(2).pipe(
-      catchError(err => {
+
+      }
+    });
+  };
+
+  getTiposDocumento() {
+
+    this.userService.getLista(2).subscribe({
+      next: (res) => {
+        this.tiposDocumento = res.lista;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
         Swal.fire({
+          allowOutsideClick: true,
           icon: 'error',
-          title: 'Error en tiposDocumento',
-          text: err.error?.msg || 'No se pudo cargar la lista de tipos de documento'
+          title: err.error.msg,
+          text: `error getTiposDocumento`
         });
-        return of({ lista: [] });
-      })
-    ),
-    tiposGenero: this.userService.getLista(3).pipe(
-      catchError(err => {
+
+      }
+    });
+  };
+
+  getTiposGenero() {
+
+    this.userService.getLista(3).subscribe({
+      next: (res) => {
+        this.tiposGenero = res.lista;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
         Swal.fire({
+          allowOutsideClick: true,
           icon: 'error',
-          title: 'Error en tiposGenero',
-          text: err.error?.msg || 'No se pudo cargar la lista de géneros'
+          title: err.error.msg,
+          text: `error getTiposGenero`
         });
-        return of({ lista: [] });
-      })
-    ),
-    ciudades: this.userService.getCiudades('CO').pipe(
-      catchError(err => {
+
+      }
+    });
+  };
+
+  getCiudades() {
+
+    this.userService.getCiudades('CO').subscribe({
+      next: (res) => {
+        this.ciudades = res.lista;
+        this.cd.detectChanges();
+      },
+      error: (err) => {
         Swal.fire({
+          allowOutsideClick: true,
           icon: 'error',
-          title: 'Error en ciudades',
-          text: err.error?.msg || 'No se pudo cargar la lista de ciudades'
+          title: err.error.msg,
+          text: `error getCiudades`
         });
-        return of({ lista: [] });
-      })
-    ),
-    roles: this.userService.getRoles({
+
+      }
+    });
+  };
+
+  getRoles() {
+
+    this.userService.getRoles({
       ordercolumn: null,
       orderdirection: null,
       pagenumber: null,
@@ -121,78 +155,24 @@ loadData() {
       estado: 1,
       fechainicio: null,
       fechafinal: null
-    }).pipe(
-      catchError(err => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error en roles',
-          text: err.error?.msg || 'No se pudo cargar la lista de roles'
-        });
-        return of({ lista: [] });
-      })
-    )
-  }).subscribe({
-    next: (res) => {
-      this.tiposPersona = res.tiposPersona?.lista;
-      this.tiposDocumento = res.tiposDocumento.lista;
-      this.tiposGenero = res.tiposGenero.lista;
-      this.ciudades = res.ciudades.lista;
-      this.roles = res.roles.lista;
-      this.cd.detectChanges();
-      Swal.close();
-    }
-  });
-}
-
-/*
-loadData(){
-    Swal.fire({
-          allowOutsideClick: false,
-          icon: 'info',
-          text: 'Cargando listas...'
-
-        });
-    Swal.showLoading();
-
-    forkJoin({
-      tiposPersona: this.userService.getLista(1),
-      tiposDocumento: this.userService.getLista(2),
-      tiposGenero: this.userService.getLista(3),
-      ciudades: this.userService.getCiudades('CO'),
-      roles: this.userService.getRoles({
-                                        ordercolumn: null,
-                                        orderdirection: null,
-                                        pagenumber: null,
-                                        pagesize: null,
-                                        id_rol: null,
-                                        nombre_rol: null,
-                                        descripcion: null,
-                                        estado: 1,
-                                        fechainicio: null,
-                                        fechafinal: null
-                                       })
     }).subscribe({
       next: (res) => {
-        this.tiposPersona = res.tiposPersona.lista;
-        this.tiposDocumento = res.tiposDocumento.lista;
-        this.tiposGenero = res.tiposGenero.lista;
-        this.ciudades = res.ciudades.lista;
-        this.roles = res.roles.lista;
+        this.roles = res.lista;
         this.cd.detectChanges();
-        Swal.close();
-
-    },
-     error: (err) => {
+      },
+      error: (err) => {
         Swal.fire({
           allowOutsideClick: true,
           icon: 'error',
           title: err.error.msg,
-          text: 'Error cargue de listas'
+          text: `error getCiudades`
         });
+
       }
-    })
-}
-*/
+    });
+  };
+
+
 createUser() {
 
         Swal.fire({

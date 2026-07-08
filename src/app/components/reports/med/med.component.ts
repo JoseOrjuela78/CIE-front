@@ -81,7 +81,6 @@ export class MedComponent implements  OnInit {
   };
 
   getBodegas() {
-    //this.bodegas = [{ "COD": "M1", "NOM": "MEDELLIN" }, { "COD": "M2", "NOM": "MEDELLIN OIKOS" }];
 
     this.reportsService.getBodegas('med').subscribe({
       next: (res) => {
