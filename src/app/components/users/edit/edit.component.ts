@@ -21,11 +21,11 @@ export class EditComponent implements OnInit{
 
   @Input() userInput!:IUser;
   EditForm!: FormGroup;
-  tiposPersona = [];
-  tiposDocumento = [];
-  tiposGenero = [];
-  ciudades = [];
-  roles = [];
+  tiposPersona:any[] = [];
+  tiposDocumento: any[] = [];
+  tiposGenero: any[] = [];
+  ciudades: any[] = [];
+  roles: any[] = [];
   createButton!: boolean;
   passInput!: boolean;
   statusUser!: EstadoUsuario; // Pendiente, Activo, Inactivo
@@ -56,8 +56,58 @@ export class EditComponent implements OnInit{
       'telefono': new FormControl(null, Validators.required),
       'id_rol': new FormControl(null, Validators.required),
       'pass': new FormControl(null, Validators.required),
-      'id_usuario': new FormControl(null, Validators.required)
+      'id_usuario': new FormControl(null)
     });
+    this.list();
+    this.getCiudades();
+    this.getRoles();
+  }
+
+  list() {
+    if (this.tiposPersona.length > 0) return;
+
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'get listas...'
+
+    });
+    Swal.showLoading();
+
+    this.userService.getLista(0).subscribe({
+      next: (res) => {
+        this.tiposPersona = [];
+        this.tiposDocumento = [];
+        this.tiposGenero = [];
+
+        res.lista.forEach((element:any) => {
+          if (element.CODIGO_LISTA === 1) {
+               this.tiposPersona.push(element);
+          };
+
+          if (element.CODIGO_LISTA === 2) {
+            this.tiposDocumento.push(element);
+          };
+
+          if (element.CODIGO_LISTA === 3) {
+            this.tiposGenero.push(element);
+          };
+
+        });
+        this.cd.detectChanges();
+        Swal.close();
+      },
+      error: (err) => {
+        Swal.fire({
+          allowOutsideClick: true,
+          icon: 'error',
+          title: err.error.msg,
+          text: `error getTiposPersona`
+
+
+        });
+       }
+      });
   }
 
   getTiposPersona() {
@@ -230,7 +280,7 @@ createUser() {
 
         });
         Swal.showLoading();
-
+  console.log(this.EditForm.value);
     if (this.EditForm.invalid) {
               Swal.fire({
                 allowOutsideClick: false,

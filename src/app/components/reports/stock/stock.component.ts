@@ -30,6 +30,9 @@ export class StockComponent implements OnInit {
       showForm: boolean = false;
       searchForm!: FormGroup;
       bodegas: Array<any> = [];
+      meses: Array<any> = [];
+
+
 
 
       private utils = inject(UtilitiesService);
@@ -37,33 +40,34 @@ export class StockComponent implements OnInit {
       private cd = inject(ChangeDetectorRef);
 
     ngOnInit(): void {
-        this.searchForm = new FormGroup({
-            'ordenarPor': new FormControl("Marca"),
-            'dirOrden': new FormControl("ASC"),
-            'pageNumer': new FormControl(1),
-            'pageSize': new FormControl(10),
-            'almacen' : new FormControl(null),
-            'marca' : new FormControl(null),
-            'referencia' : new FormControl(null),
-            'descripcion' : new FormControl(null),
-            'fechaEI' : new FormControl(null),
-            'fechaEF': new FormControl(null),
-            'fechaSI': new FormControl(null),
-            'fechaSF': new FormControl(null),
-            'operacion': new FormControl(null)
-        });
+      this.searchForm = new FormGroup({
+        'ordenarPor': new FormControl("Marca"),
+        'dirOrden': new FormControl("ASC"),
+        'pageNumer': new FormControl(1),
+        'pageSize': new FormControl(10),
+        'almacen': new FormControl(null),
+        'marca': new FormControl(null),
+        'referencia': new FormControl(null),
+        'descripcion': new FormControl(null),
+        'fechaEI': new FormControl(null),
+        'fechaEF': new FormControl(null),
+        'fechaSI': new FormControl(null),
+        'fechaSF': new FormControl(null),
+        'operacion': new FormControl(null)
+      });
 
         this.datatable = {
             headerRows: {
-                Fecha_Reporte: "Reporte de:",
-                Marca: "Marca",
-                Referencia: "Referencia",
-                Descripcion: "Descripcion",
-                Cantidad_Disponible: "Disponible",
-                Cantidad_Vendida: "Vendidas",
-                Fecha_Entrada: "Fecha Entrada",
-                Fecha_Salida: "Fecha Salida",
-                Almacen: "Almacen"
+              Fecha_Reporte: "Reporte de:",
+              Marca: "Marca",
+              Referencia: "Referencia",
+              Descripcion: "Descripcion",
+              Cantidad_Disponible: "Disponible",
+              Cantidad_Vendida: "Vendidas",
+              Fecha_Entrada: "Fecha Entrada",
+              Fecha_Salida: "Fecha Salida",
+              Cantidad_Vendida_uf: "Cantidad_Vendida_uf",
+              Almacen: "Almacen"
             },
             dataRows: []
         };
@@ -73,16 +77,19 @@ export class StockComponent implements OnInit {
             next: false
       };
       this.getBodegas();
+      this.searchForm.get('almacen')?.valueChanges.subscribe((result: any) => {
+        this.onSubmit();
+      })
     };
 
-    generarReporte() {
+  generarReporte() {
         this.searchForm.get('operacion')?.setValue(1);
         this.onSubmit();
         this.showForm = true;
   };
 
   getBodegas() {
-    //this.bodegas = [{ "COD": "B1", "NOM": "BOGOTA PRINCIPAL" }, { "COD": "B2", "NOM": "BOGOTA OIKOS" }, { "COD": "M1", "NOM": "MEDELLIN" }, { "COD": "M2", "NOM": "MEDELLIN OIKOS" }, { "COD": "B3", "NOM": "BOGOTA REPUESTOS" }, { "COD": "B4", "NOM": "COMERCIAL" }, { "COD": "B5", "NOM": "PTE X FACTURAR" }, { "COD": "S1", "NOM": "STAYER" }, { "COD": "S2", "NOM": "CONSIGNACION" }, { "COD": "B6", "NOM": "DEMOSTRACIONES" }, { "COD": "B7", "NOM": "OBSOLETOS" }, { "COD": "B8", "NOM": "MANTENIMIENTO" }];
+
     this.reportsService.getBodegas('all').subscribe({
         next: (res) => {
         this.bodegas = res.bodegas;
@@ -99,9 +106,9 @@ export class StockComponent implements OnInit {
 
       })
 
-    }
+  }
 
-    onSubmit() {
+  onSubmit() {
        Swal.fire({
                  allowOutsideClick: false,
                  icon: 'info',
@@ -112,10 +119,10 @@ export class StockComponent implements OnInit {
 
         this.searchForm.get('pageNumer')?.setValue(this.paginaActual);
         this.searchForm.get('pageSize')?.setValue(this.registrosXPagina);
-
-       this.reportsService.putReportStockCIE(this.searchForm.value).subscribe({
+        this.reportsService.putReportStockCIE(this.searchForm.value).subscribe({
          next: (res) => {
             this.datatable.dataRows = res.datos;
+            this.cd.detectChanges();
             this.totalRegistros = res.TotalRegistros;
             this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pageSize, this.totalRegistros);
             this.verifyPaginationControls();
@@ -125,6 +132,7 @@ export class StockComponent implements OnInit {
             this.showPages = showPages;
             this.paginaActual = currentPage;
             this.paginasMostrar = setPages;
+            this.cd.detectChanges();
             Swal.close();
          },
          error: (err) => {

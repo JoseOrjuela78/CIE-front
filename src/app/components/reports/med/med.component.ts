@@ -36,7 +36,7 @@ export class MedComponent implements  OnInit {
   private cd = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-        this.searchForm = new FormGroup({
+  this.searchForm = new FormGroup({
       'ordenarPor': new FormControl("Marca"),
       'dirOrden': new FormControl("ASC"),
       'pageNumer': new FormControl(1),
@@ -62,6 +62,7 @@ export class MedComponent implements  OnInit {
                     Cantidad_Vendida: "Vendidas",
                     Fecha_Entrada: "Fecha Entrada",
                     Fecha_Salida: "Fecha Salida",
+                    Cantidad_Vendida_uf: "Cantidad_Vendida_uf",
                     Almacen: "Almacen"
                    },
                     dataRows: []
@@ -72,6 +73,9 @@ export class MedComponent implements  OnInit {
       next: false
     };
     this.getBodegas();
+    this.searchForm.get('almacen')?.valueChanges.subscribe((result: any) => {
+      this.onSubmit();
+    })
   };
 
   generarReporte() {
@@ -114,16 +118,18 @@ export class MedComponent implements  OnInit {
 
    this.reportsService.putReportStock(this.searchForm.value).subscribe({
      next: (res) => {
-        this.datatable.dataRows = res.datos;
-        this.totalRegistros = res.TotalRegistros;
-        this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pageSize, this.totalRegistros);
-        this.verifyPaginationControls();
+       this.datatable.dataRows = res.datos;
+       this.cd.detectChanges();
+       this.totalRegistros = res.TotalRegistros;
+       this.paginas = this.utils.calcularCantidadPaginas(this.searchForm.value.pageSize, this.totalRegistros);
+       this.verifyPaginationControls();
 
         const {currentPage, showPages, setPages} = this.utils.limitPagination(this.paginas,this.paginaActual,this.nextFunction,this.lastPageFlag);
 
         this.showPages = showPages;
         this.paginaActual = currentPage;
         this.paginasMostrar = setPages;
+        this.cd.detectChanges();
         Swal.close();
      },
      error: (err) => {

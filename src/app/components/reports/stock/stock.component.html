@@ -58,7 +58,7 @@
               <input formControlName="fechaSF" type="date" class="form-control" id="FechaSF" aria-describedby="FechaSF">
             </div>
           </div>
-          </div>
+        </div>
         <button type="button" class="btn btn-warning m-1" (click)="onClear()">Limpiar</button>
         <button type="submit" class="btn btn-primary">Buscar</button>
       </form>
@@ -67,63 +67,50 @@
       <table class="table">
         <thead class="bg-primary text-white">
           <tr>
-            <th class="bg-primary" scope="col"><button
-                             class="btn btn-primary">
-                             {{datatable.headerRows['Fecha_Reporte']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                            class="btn btn-primary"
-                            (click)="columnFunction('Marca')"
-                            >{{datatable.headerRows['Marca']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                            class="btn btn-primary"
-                            (click)="columnFunction('Referencia ')"
-                            >{{datatable.headerRows['Referencia']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                             class="btn btn-primary"
-                             (click)="columnFunction('Descripcion')">
-                             {{datatable.headerRows['Descripcion']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                             class="btn btn-primary"
-                             (click)="columnFunction('Cantidad_Disponible')">
-                             {{datatable.headerRows['Cantidad_Disponible']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                             class="btn btn-primary"
-                             (click)="columnFunction('Cantidad_Vendida')">
-                             {{datatable.headerRows['Cantidad_Vendida']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                             class="btn btn-primary"
-                             (click)="columnFunction('FechaEntrada')">
-                             {{datatable.headerRows['Fecha_Entrada']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                             class="btn btn-primary"
-                             (click)="columnFunction('FechaSalida')">
-                             {{datatable.headerRows['Fecha_Salida']}}
-                            </button></th>
-            <th class="bg-primary" scope="col"><button
-                             class="btn btn-primary"
-                             (click)="columnFunction('Almacen')">
-                             {{datatable.headerRows['Almacen']}}
-                            </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary">
+                {{datatable.headerRows['Fecha_Reporte']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary"
+                (click)="columnFunction('Marca')">{{datatable.headerRows['Marca']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary"
+                (click)="columnFunction('Referencia ')">{{datatable.headerRows['Referencia']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary" (click)="columnFunction('Descripcion')">
+                {{datatable.headerRows['Descripcion']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary" (click)="columnFunction('Cantidad_Disponible')">
+                {{datatable.headerRows['Cantidad_Disponible']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary" (click)="columnFunction('Cantidad_Vendida')">
+                {{datatable.headerRows['Cantidad_Vendida']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary" (click)="columnFunction('FechaEntrada')">
+                {{datatable.headerRows['Fecha_Entrada']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary" (click)="columnFunction('FechaSalida')">
+                {{datatable.headerRows['Fecha_Salida']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary" (click)="columnFunction('Cantidad_Vendida_uf')">
+                {{datatable.headerRows['Cantidad_Vendida_uf']}}
+              </button></th>
+            <th class="bg-primary" scope="col"><button class="btn btn-primary" (click)="columnFunction('Almacen')">
+                {{datatable.headerRows['Almacen']}}
+              </button></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let row of datatable.dataRows" class="font11">
-            <td>{{row.FechaReporte | date:'dd/MM/yyyy'}}</td>
-            <td>{{row.Marca}}</td>
-            <td>{{row.Referencia}}</td>
-            <td>{{row.Descripcion}}</td>
-            <td>{{row.Cantidad_Disponible }}</td>
-            <td>{{row.Cantidad_Vendida}}</td>
-            <td>{{row.FechaEntrada | date:'dd/MM/yyyy'}}</td>
-            <td>{{row.FechaSalida | date:'dd/MM/yyyy'}}</td>
-            <td>{{row.Almacen}}</td>
+            <td class="text-center">{{row.FechaReporte | date:'dd/MM/yyyy'}}</td>
+            <td class="text-center">{{row.Marca}}</td>
+            <td class="text-center">{{row.Referencia}}</td>
+            <td class="text-center">{{row.Descripcion}}</td>
+            <td class="text-end">{{row.Cantidad_Disponible }}</td>
+            <td class="text-end">{{row.Cantidad_Vendida}}</td>
+            <td class="text-center">{{row.FechaEntrada | date:'dd/MM/yyyy'}}</td>
+            <td class="text-center">{{row.FechaSalida | date:'dd/MM/yyyy'}}</td>
+            <td class="text-end">{{row.Cantidad_Vendida_uf }}</td>
+            <td class="text-center">{{row.Almacen}}</td>
           </tr>
          </tbody>
       </table>

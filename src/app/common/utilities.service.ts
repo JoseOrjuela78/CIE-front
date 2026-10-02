@@ -2,6 +2,12 @@
 
 import { Injectable } from '@angular/core';
 
+type PaginationResult = {
+  currentPage: number;
+  showPages: boolean;
+  setPages: number[];
+};
+
 @Injectable({
   providedIn: 'root' // disponible en toda la app
 })
@@ -19,70 +25,64 @@ export class UtilitiesService{
 
   };
 
-  limitPagination(pages:number[], currentPage: number, nextFunction:boolean, lastPageFlag:boolean = false):any{
+limitPagination(
+  pages: number[],
+  currentPage: number,
+  nextFunction: boolean,
+  lastPageFlag: boolean = false
+): PaginationResult {
+  let setPages: number[] = [];
+  let lowerLimit: number;
+  let upperLimit: number;
+  let showPages: boolean = false;
+  const totalRows: number = pages.length;
 
-    let setPages:any = []
-    let lowerLimit: number;
-    let upperLimit: number;
-    let showPages: boolean = false;
-    const totalRows: number = pages.length;
+  // Caso: menos de 10 páginas
+  if (totalRows < 10) {
+    return { currentPage, showPages, setPages };
+  }
 
-    if(totalRows < 10) return { 
-                                currentPage,
-                                showPages,
-                                setPages
-                              };
+  showPages = true;
 
-    showPages = true;
+  const cadaDiez = pages.filter((_, index) => (index + 1) % 10 === 0);
+  const maxpage = Math.max(...pages);
+  if (!cadaDiez.includes(maxpage)) cadaDiez.push(maxpage);
 
-    const cadaDiez = pages.filter((_, index) => (index + 1) % 10 === 0);
-    const maxpage = Math.max(...pages);
+  // Caso: avanzar (next)
+  if (
+    cadaDiez.includes(currentPage - 1) &&
+    currentPage <= totalRows &&
+    nextFunction
+  ) {
+    lowerLimit = currentPage;
+    upperLimit = Math.min(currentPage + 9, totalRows);
+    setPages = Array.from({ length: upperLimit - lowerLimit + 1 }, (_, i) => lowerLimit + i);
 
-    if (!cadaDiez.includes(maxpage)) cadaDiez.push(maxpage);
+    return { currentPage, showPages, setPages };
+  }
 
-    
-    //if next page
-    if (cadaDiez.includes(currentPage - 1)
-          && currentPage <= totalRows
-          && nextFunction) {
-          lowerLimit = currentPage;
-          upperLimit = currentPage + 9;
-          setPages = [];
-          for (let i = lowerLimit; i <= upperLimit && i <= totalRows; i++) {
-            setPages.push(i);
-          };
+  // Caso: retroceder (previous)
+  if (
+    (cadaDiez.includes(currentPage + 1) || currentPage === 1) &&
+    currentPage > 0 &&
+    !nextFunction
+  ) {
+    lowerLimit = currentPage === 1 ? 1 : Math.max(currentPage - 8, 1);
+    upperLimit = Math.min(currentPage === 1 ? currentPage + 9 : currentPage + 1, totalRows);
+    setPages = Array.from({ length: upperLimit - lowerLimit + 1 }, (_, i) => lowerLimit + i);
 
-          return {
-                  currentPage,      
-                  showPages,
-                  setPages
-                 }
-    };
+    if (lastPageFlag) currentPage = totalRows;
 
-     //if previous page
+    return { currentPage, showPages, setPages };
+  }
 
-    if ((cadaDiez.includes(currentPage + 1)
-          || currentPage === 1)
-          && currentPage > 0
-          && !nextFunction
-        ) {
-          lowerLimit = currentPage === 1?1:currentPage - 8;
-          upperLimit = currentPage === 1 ? currentPage + 9 : currentPage + 1;
-          setPages = [];
-          for (let i = lowerLimit; i <= upperLimit && i <= totalRows; i++) {
-              setPages.push(i);
-          };
+  // ✅ Caso por defecto (cuando no aplica ninguna condición anterior)
+  lowerLimit = Math.max(currentPage - 4, 1);
+  upperLimit = Math.min(currentPage + 5, totalRows);
+  setPages = Array.from({ length: upperLimit - lowerLimit + 1 }, (_, i) => lowerLimit + i);
 
-          if (lastPageFlag) { currentPage = totalRows };
-
-          return {
-                  currentPage, 
-                  showPages,
-                  setPages
-          }
-          
-    };
-  };
+  return { currentPage, showPages, setPages };
+}
 
   //funcion para limitar decimales
   decimales( num: number, dec: number){
